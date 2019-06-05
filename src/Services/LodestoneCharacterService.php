@@ -56,14 +56,20 @@ class LodestoneCharacterService
     {
         $data = $this->api->character->get($lodestone_id, [], true);
 
+        $character = new LodestoneCharacter();
+        $character->setLodestoneId($lodestone_id);
+
+        $character->setJustCreated(true);
+
         if ($data->Info->Character->State == 2) {
-            $character = new LodestoneCharacter();
-            $character->setLodestoneId($lodestone_id);
             $character->setName($data->Character->Name);
             $character->setServer($data->Character->Server);
-            $this->em->persist($character);
-            $this->em->flush();
-            return $character;
+            $character->setAvatarUrl($data->Character->Avatar);
+            $character->setPortraitUrl($data->Character->Portrait);
         }
+
+        $this->em->persist($character);
+        $this->em->flush();
+        return $character;
     }
 }

@@ -3,5 +3,129 @@
 {% block title %}{{ parent() }} - {{ character.name }} @ {{ character.server }}{% endblock %}
 
 {% block body %}
+    <main class="sitemain">
 
+        {% if character.justCreated %}
+        <div class="content-card bg-success text-white">
+            <div class="row">
+                <div class="col-12">
+                    <span class="small">Character is created and queued for automatic updating.</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="w-100 d-md-flex mb-3">
+            <div class="content-card mr-2 w-100" style="min-width: 320px;max-width: 320px;">
+
+                <div class="title">
+                    <div>
+                        <span>{{ character.server }}</span><br>
+                        <h2 class="d-inline mt-0" style="font-size: 1.45rem">{{ character.name }}</h2>
+                    </div>
+                </div>
+
+                <img class="mb-2 w-100 h-auto shadow rounded" src="{{ character.portraitUrl }}"/>
+
+                <div class="mb-2">
+                    {{ include('lodestone_character/_character_joboverview.html.twig', {'character':character}) }}
+                </div>
+
+                <table>
+                    <tr>
+                        <td><small><strong>Last xivGEAR update: </strong></small></td>
+                        <td><small>{$obj->updatedXivapi|datetime}</small></td>
+                    </tr>
+                    <tr>
+                        <td><small><strong>Last xivAPI update: </strong></small></td>
+                        <td><small>{$obj->xivapiUpdated|datetime}</small></td>
+                    </tr>
+                </table>
+            </div>
+            {#<div class="w-100">
+                <div class="content-card">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="title border-bottom border-primary mb-3">
+                                <h4>Gearsets</h4>
+                            </div>
+                            <div class="d-md-flex">
+                                <div style="min-width: 145px;max-width: 145px;">
+                                    <div class="class-selector text-light pb-3 mb-3">
+                                        {foreach $obj->gearsets as $short => $gearset}
+                                        {$short=strtolower($short)}
+                                        {$type=FfxivClass::get($short)->getType()}
+                                        <div onclick="viewGear('{$short|he}')" class="px-3 mb-1 classtype-{$type|he} cuPo" style="background-image: url('https://xivapi.com{FfxivClass::get($short)->iconUrl|he}');">
+                                            {FfxivClass::get($short)->name_lang|he|ucwords}
+                                        </div>
+                                        {/foreach}
+                                    </div>
+                                </div>
+                                <div class="px-3 w-100" style="min-width: 480px;">
+
+                                    {$i=0}
+                                    {foreach $obj->gearsets as $short => $gearset}
+                                    {$i=$i+1}
+                                    {$short=strtolower($short)}
+                                    {include
+                                    file="_character_statoverview.tpl"
+                                    i=$i
+                                    obj=$obj
+                                    short=$short
+                                    gearset=$gearset
+                                    }
+                                    {/foreach}
+                                </div>
+                                <div style="min-width: 350px;max-width: 350px;">
+                                    <div class="gear-list ml-auto">
+                                        {$i=0}
+                                        {foreach $obj->gearsets as $short => $gearset}
+                                        {$i=$i+1}
+                                        {$short=strtolower($short)}
+                                        {include
+                                        file="_character_gearoverview.tpl"
+                                        i=$i
+                                        obj=$obj
+                                        short=$short
+                                        gearset=$gearset
+                                        }
+                                        {/foreach}
+                                    </div>
+                                    <script>
+                                        function viewGear(_class) {
+                                            $('.gear-overview').hide();
+                                            $('#gear-'+_class).show();
+
+                                            $('.gear-stats').hide();
+                                            $('#gear-stats-'+_class).show();
+                                        }
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <small><i class="fa fa-info-circle"></i> Character data updates automatically every 6 to 7 hours, but only the job that was active before the last logout will be updated.</small>
+                        </div>
+                    </div>
+                </div>
+
+                {* <div class="content-card">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="title border-bottom border-primary ">
+                                <h4>FFLOGS</h4>
+                            </div>
+                            <table >
+                                Dolor sint aliquip in nostrud non reprehenderit fugiat minim sunt pariatur duis ullamco laborum fugiat quis cupidatat eiusmod ea nulla tempor anim cupidatat ad sit dolore id et est eu cillum laboris enim irure et officia ad sit irure consectetur tempor sit duis veniam et nisi non est nostrud laboris sit incididunt velit ad in voluptate adipisicing cupidatat duis aliquip labore culpa in consectetur exercitation deserunt labore magna dolore magna est et labore non veniam mollit duis in in eu exercitation esse dolor quis cupidatat et aliquip aliquip nisi veniam aliquip id ex adipisicing anim veniam dolore minim excepteur adipisicing anim in incididunt laboris aliqua incididunt mollit pariatur commodo exercitation deserunt in et excepteur dolore proident non aute sunt dolore eu enim in pariatur ut veniam magna ut amet duis occaecat cupidatat dolor dolor consequat cupidatat proident ea ad sunt sunt laborum aute do proident officia ut laboris consequat nisi sit irure elit ut eu enim pariatur mollit dolor consequat dolor ex ut ex irure laborum sit duis sint in veniam anim esse cupidatat qui reprehenderit in officia deserunt enim ut proident irure magna est proident deserunt tempor dolore voluptate laborum velit deserunt enim anim consequat culpa ut mollit proident ut laborum tempor dolore laboris velit minim nisi cupidatat duis mollit esse irure enim in anim laboris aliquip exercitation sunt nisi fugiat ullamco minim elit consectetur nulla mollit incididunt deserunt enim est esse do dolor ut dolore aliquip sit mollit exercitation do ullamco aliquip qui ut dolore sint ut enim dolor cillum nostrud et exercitation elit cillum ex.
+                            </table>
+                        </div>
+                    </div>
+                </div> *}
+
+            </div>#}
+
+        </div>
+    </main>
 {% endblock %}

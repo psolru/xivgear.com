@@ -1,0 +1,165 @@
+.job-overview .job-icon {
+	min-width: 23px;
+	width: 23px;
+	max-width: 23px;
+
+	min-height: 23px;
+	height: 23px;
+	max-height: 23px;
+}
+
+.job-overview .job-icon.placeholder {
+	opacity: 0;
+}
+
+.class-selector {
+}
+
+.class-selector div {
+	padding-left: 25px !important;
+	padding-top: 0;
+	padding-bottom: 0;
+	display: inherit;
+	background-position: 5px;
+	background-size: 20px 20px;
+	background-repeat: no-repeat;
+}
+
+.class-selector div.classtype-tank {
+	background-color: #465DCC;
+}
+.class-selector div.classtype-tank:hover {
+	background-color: darken(#465DCC, 20);
+}
+
+.class-selector div.classtype-healer {
+	background-color: #487B39;
+}
+.class-selector div.classtype-healer:hover {
+	background-color: darken(#487B39, 20);
+}
+
+.class-selector div.classtype-dps {
+	background-color: #803A3B;
+}
+.class-selector div.classtype-dps:hover {
+	background-color: darken(#803A3B, 20);
+}
+
+.class-selector div.classtype-crafter {
+	background-color: #6749AE;
+}
+.class-selector div.classtype-crafter:hover {
+	background-color: darken(#6749AE, 20);
+}
+
+.class-selector div.classtype-gatherer {
+	background-color: #B89A40;
+}
+.class-selector div.classtype-gatherer:hover {
+	background-color: darken(#B89A40, 20);
+}
+
+.gear-list {
+	width: 350px;
+}
+
+.gear-overview .placeholder {
+	opacity: 0;
+}
+
+.gear-overview .equip-image {
+	background-image: url('https://img.finalfantasyxiv.com/lds/h/r/034E2eGleewOXxk2ITn2P4LkT4.png');
+	background-repeat: no-repeat;
+	background-position-y: -1px;
+	cursor: pointer;
+	position: relative;
+}
+
+.gear-overview .equip-image > .equip-image-glossy {
+	position: absolute;
+	left: -4px;
+	height: 46px;
+	width: 48px;
+}
+
+.gear-overview .equip-image:hover > .equip-details {
+	display: block !important;
+}
+
+.gear-overview .gear-head .gear-weapon {
+	padding-top: 5px;
+}
+
+.gear-overview .gear-head .gear-title {
+	
+}
+
+.gear-overview .gear-head .gear-title img {
+	height: 20px;
+	width: 20px;
+}
+
+.gear-overview .gear-head .gear-weapon,
+.gear-overview .main-slots img,
+.gear-overview .sub-slots img {
+	width: 40px;
+	height: 40px;
+	margin-bottom: 10px;
+}
+
+.gear-overview .gear-head .gear-weapon,
+.gear-overview .main-slots {
+	margin-right: 10px;
+}
+
+.gear-overview .portrait .ilevel {
+	top: 0;
+	right: 0;
+}
+
+.gear-overview .sub-slots {
+	margin-left: 10px;
+}
+
+.gear-overview .gear-mainHand {
+	background-position-x: 0;
+	background-position-y: 5px;
+}
+.gear-overview .gear-head {
+	background-position-x: -244px;
+}
+.gear-overview .gear-body {
+	background-position-x: -4px;
+}
+.gear-overview .gear-hands {
+	background-position-x: -196px;
+}
+.gear-overview .gear-waist {
+	background-position-x: -532px;
+}
+.gear-overview .gear-legs {
+	background-position-x: -292px;
+}
+.gear-overview .gear-feet {
+	background-position-x: -148px;
+}
+.gear-overview .gear-offHand {
+	background-position-x: -436px;
+}
+.gear-overview .gear-earrings {
+	background-position-x: -100px;
+}
+.gear-overview .gear-necklace {
+	background-position-x: -340px;
+}
+.gear-overview .gear-bracelets {
+	background-position-x: -52px;
+}
+.gear-overview .gear-ring1,
+.gear-overview .gear-ring2 {
+	background-position-x: -388px;
+}
+.gear-overview .gear-soulCrystal {
+	background-position-x: -484px;
+}

@@ -1,12 +1,100 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<!doctype html>
+<html class="h-100">
+<head>
+    {# Google Analytics #}
+    {% if app.environment == 'prod' %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140684595-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-140684595-1');
+    </script>
+    {% endif %}
+
+    {# global header tags #}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}">
+
+    {# site specific header tags #}
+    <title>{% block title %}XIVGEAR{% endblock %}</title>
+
+    <meta name="description" content="A FINAL FANTASY XIV: Online Gear Tracker">
+    <meta property="og:title" content="{{ block('title') }}">
+    <meta property="og:description" content="A FINAL FANTASY XIV: Online Gear Tracker">
+    <meta name="theme-color" content="#3E92CC">
+    <meta property="og:image" content="{{ asset('gfx/logo.png') }}">
+
+    {# Font #}
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+
+    {# Bootstrap JS #}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    {# Bootstrap CSS is imported in scss/main.scss #}
+
+    {# FontAwesome #}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    {# pretty-checkbox #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
+
+    {# Custom CSS #}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+
+</head>
+<body class="d-flex flex-column h-100">
+
+{% if app.environment == 'dev' %}
+<div class="position-absolute text-danger" style="z-index: 10000">
+    <h1>DEV-SYSTEM</h1>
+</div>
+{% endif %}
+
+<header class="siteheader d-flex bg-dark py-2 px-3 position-fixed w-100 shadow">
+    <div class="brand">
+        <a href="{{ asset('home') }}">
+
+            <span class="brand-name text-primary mb-0">XIVGEAR <small style="font-size: 50%;"><small>v</small>1.1.0</small></span>
+            <small class="text-muted">
+                Your #1 FFXIV stalker tool <img height="20px" src="{{ asset('gfx/kappa.png') }}"/>
+            </small>
+        </a>
+    </div>
+    <div class="w-100 justify-content-between align-self-center d-flex">
+        <div class="searchbar w-100 position-relative mr-3">
+            <input id="fayt_input" class="form-control" type="text" placeholder="Search for a character…"
+                   onkeyup="Fayt.showResult(this.value, 'fayt_result')"
+                   onmouseup="Fayt.showResult(this.value, 'fayt_result')"
+            >
+            <div id="fayt_result" class="results position-absolute shadow rounded pt-2 px-2 border border-primary bg-dark"
+                 onclick="event.stopPropagation();"
+            ></div>
+        </div>
+        <div class="login">
+            {# {if !$loginUser}
+            <a href="{$__baseurl}{urlfor site='discord_login'}" class="btn btn-secondary w-100">
+                Login via Discord
+            </a>
+            {else}
+            <a class="settings" href="{$__baseurl}{urlfor site='user_settings'}">
+                <img class="rounded-circle" src="{$loginUser->getDiscordAvatarUrl()}"/>
+                <span class="text-muted">{$loginUser->username|he}</span>
+            </a>
+            {/if} #}
+        </div>
+    </div>
+</header>
+{% block body %}{% endblock %}
+
+<footer class="sitefooter mt-auto py-2 px-3 text-right">
+		<span class="text-muted"><small>
+			ALL FINAL FANTASY XIV © 2010 - 2019 MATERIAL IS OWNED BY SQUARE ENIX CO., LTD. All Rights Reserved.
+		</small></span>
+</footer>
+</body>
 </html>

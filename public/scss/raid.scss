@@ -1,0 +1,43 @@
+// Fayt
+.raid-member-search .results {
+	z-index: 2;
+	width: calc(100% - 30px);
+	border-top-right-radius: 0 !important;
+	border-top-left-radius: 0 !important;
+	border-top: 1px solid;
+	display: none;
+	max-height: 500px;
+	overflow-y: scroll;
+}
+
+.raid-member-search .results a:hover {
+	background-color: $primary;
+	color: $white;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.raid-member-search .results a img {
+	width: 50px;
+}
+
+.raid-member-search .results a .server {
+	width: 120px;
+}
+
+// Current Members
+
+.currentRaidMembers a:hover {
+	background-color: $primary;
+	color: $white;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.currentRaidMembers a img {
+	width: 30px;
+}
+
+.currentRaidMembers a .server {
+	width: 120px;
+}

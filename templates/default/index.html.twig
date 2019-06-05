@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <main class="sitemain mw-100">
+
+        <div class="row">
+
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="content-card text-center">
+                    <h2 class="d-inline-block">
+					<span class="text-primary">
+						<i class="fa fa-clock"></i><br>
+						06:00
+					</span> <span style="font-size: 60%;">Hours</span>
+                    </h2><br>
+                    <span>Average update time</span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="content-card text-center">
+                    <h2 class="d-inline-block">
+					<span class="text-primary">
+						<i class="fa fa-users"></i><br>
+						123
+					</span>
+                    </h2><br>
+                    <span>Characters</span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="content-card text-center">
+                    <h2 class="d-inline-block">
+					<span class="text-primary">
+						<img src="{{ asset('gfx/gearset_logo.png') }}" style="height: 33px;"><br>
+						123
+					</span>
+                    </h2><br>
+                    <span>GearSets</span>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="content-card text-center">
+                    <h2 class="d-inline-block text-primary">
+                        <a class="text-decoration-none" href="https://discord.gg/DFNf3Uh" target="_blank">
+                            <i class="fab fa-discord"></i><br>
+                            <span class="small">Solin#1337</span>
+                        </a>
+                    </h2><br>
+                    <span>Get in Contact</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="content-card">
+                    <div class="title border-bottom border-primary mb-3">
+                        <h2>About</h2>
+                    </div>
+                    <div class="content">
+                        <p>
+                        <h4>Welcome to XIVGEAR.com a FINAL FANTASY XIV: Online Gear Tracker.</h4>
+                        </p>
+                        <p>
+                            I loved the old XIVDB and of course - their gear tracker. If you're reading this <i>Vekien</i>, thank you for this great project. And now, thank you for <a target="_blank" href="https://xivapi.com">XIVAPI.com</a>. This tool is powered by it and wouldn't be possible without your work. Since I'm not maintaining an item-database by myself yet, I'll just link to <a target="_blank" href="https://garlandtools.org/db/">Garland Tools</a> and <a target="_blank" href="https://ffxivteamcraft.com/">FFXIV Teamcraft</a> for details.
+                        </p>
+                        <p>
+                            I wanted to have a gear tracker and I needed a private coding project to learn from - maybe I was a bit bored at the end of this addon, too. Whatever - win/win.
+                        </p>
+                        <p>
+                            Also it would be a dream to have a project that combines two of my favorite activities: Coding and FFXIV. It is live now and I'm curious how far we can go and what features we can think of. Yes, <strong>we</strong>. This project isn't just for me, it's for the whole community. Since this is a fact, I've created a <a target="_blank" href="https://discord.gg/DFNf3Uh">discord server</a> where you can ask questions and request features.
+                        </p>
+                        <p>
+                            Have fun.<br>
+                            - Solin Rush @Cerberus
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="content-card">
+                    <div class="title border-bottom border-primary mb-3">
+                        <h2>Updates</h2>
+                    </div>
+                    <div class="content">
+                        Nothing new. Well, I just launched the tool. ¯\_(ツ)_/¯
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-6 mb-3">
+                <div class="content-card">
+                    <h2>Recently updated</h2>
+                    <hr class="border-primary">
+                    <table class="w-100">
+                        {#foreach $recentlyUpdated as $obj}
+                        <tr>
+                            <td class="pb-1">
+                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">
+                                    <img style="width: 40px;" src="{$obj->avatarUrl|he}">
+                                </a>
+                            </td>
+                            <td>{$obj->server|he}</td>
+                            <td>
+                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">{$obj->name|he}</a>
+                            </td>
+                            <td class=" text-right">{$obj->updatedXivapi|datetime|he}</td>
+                        </tr>
+                        {foreachelse}
+                        <h3 class="text-primary">Nothing here!</h3>
+                        Go up and search for a character to add it.
+                        {/foreach#}
+                    </table>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div class="content-card">
+                    <h2>Recently added</h2>
+                    <hr class="border-primary">
+                    <table class="w-100">
+                        {#foreach $recentlyCreated as $obj}
+                        <tr>
+                            <td class="pb-1">
+                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">
+                                    <img style="width: 40px;" src="{$obj->avatarUrl|he}">
+                                </a>
+                            </td>
+                            <td>{$obj->server|he}</td>
+                            <td>
+                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">{$obj->name|he}</a>
+                            </td>
+                            <td class=" text-right">{$obj->created|datetime|he}</td>
+                        </tr>
+                        {foreachelse}
+                        <h3 class="text-primary">Nothing here!</h3>
+                        Go up and search for a character to add it.
+                        {/foreach#}
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

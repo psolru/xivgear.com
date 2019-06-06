@@ -1,1 +1,176 @@
-{{ character.name }}
+<div class="job-overview">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between">
+
+            {# TANKS #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/pld.png') }}"><br>
+                <div class="text-center">{$obj->classes['pld']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/war.png') }}"><br>
+                <div class="text-center">{$obj->classes['war']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/drk.png') }}"><br>
+                <div class="text-center">{$obj->classes['drk']->level|he}</div>
+            </div>
+            {# /TANKS #}
+
+            {# PLACEHOLDER #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon placeholder" src="#"><br>
+                <div class="text-center">&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon placeholder" src="#"><br>
+                <div class="text-center">&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon placeholder" src="#"><br>
+                <div class="text-center">&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon placeholder" src="#"><br>
+                <div class="text-center">&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon placeholder" src="#"><br>
+                <div class="text-center">&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            {# /PLACEHOLDER #}
+
+            {# HEALER #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/whm.png') }}"><br>
+                <div class="text-center">{$obj->classes['whm']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/sch.png') }}"><br>
+                <div class="text-center">{$obj->classes['sch']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/ast.png') }}"><br>
+                <div class="text-center">{$obj->classes['ast']->level|he}</div>
+            </div>
+            {# /HEALER #}
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between">
+
+            {# CASTER #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/blm.png') }}"><br>
+                <div class="text-center">{$obj->classes['blm']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/smn.png') }}"><br>
+                <div class="text-center">{$obj->classes['smn']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/rdm.png') }}"><br>
+                <div class="text-center">{$obj->classes['rdm']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/blu.png') }}"><br>
+                <div class="text-center">{$obj->classes['blu']->level|he}</div>
+            </div>
+            {# /CASTER #}
+
+            {# RANGE #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/brd.png') }}"><br>
+                <div class="text-center">{$obj->classes['brd']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/mch.png') }}"><br>
+                <div class="text-center">{$obj->classes['mch']->level|he}</div>
+            </div>
+            {# /RANGE #}
+
+            {# PLACEHOLDER #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon placeholder" src="#"><br>
+                <div class="text-center">&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            {# /PLACEHOLDER #}
+
+            {# MELEE #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/mnk.png') }}"><br>
+                <div class="text-center">{$obj->classes['mnk']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/drg.png') }}"><br>
+                <div class="text-center">{$obj->classes['drg']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/nin.png') }}"><br>
+                <div class="text-center">{$obj->classes['nin']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/sam.png') }}"><br>
+                <div class="text-center">{$obj->classes['sam']->level|he}</div>
+            </div>
+            {# /MELEE #}
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between">
+
+            {# CRAFTER #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/crp.png') }}"><br>
+                <div class="text-center">{$obj->classes['crp']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/bsm.png') }}"><br>
+                <div class="text-center">{$obj->classes['bsm']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/arm.png') }}"><br>
+                <div class="text-center">{$obj->classes['arm']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/gsm.png') }}"><br>
+                <div class="text-center">{$obj->classes['gsm']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/ltw.png') }}"><br>
+                <div class="text-center">{$obj->classes['ltw']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/wvr.png') }}"><br>
+                <div class="text-center">{$obj->classes['wvr']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/alc.png') }}"><br>
+                <div class="text-center">{$obj->classes['alc']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/cul.png') }}"><br>
+                <div class="text-center">{$obj->classes['cul']->level|he}</div>
+            </div>
+            {# /CRAFTER #}
+
+            {# GATHERER #}
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/min.png') }}"><br>
+                <div class="text-center">{$obj->classes['min']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/btn.png') }}"><br>
+                <div class="text-center">{$obj->classes['btn']->level|he}</div>
+            </div>
+            <div class="job-item d-inline-block">
+                <img class="job-icon" src="{{ asset('gfx/classjob/fsh.png') }}"><br>
+                <div class="text-center">{$obj->classes['fsh']->level|he}</div>
+            </div>
+            {# /GATHERER #}
+
+        </div>
+    </div>
+</div>

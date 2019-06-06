@@ -110,6 +110,7 @@ class LodestoneCharacterLodestoneClass
 
     public function setLodestoneClass(?LodestoneClass $lodestone_class): self
     {
+        $this->setShort(strtolower($lodestone_class->getShortEn()));
         $this->lodestone_class = $lodestone_class;
 
         return $this;

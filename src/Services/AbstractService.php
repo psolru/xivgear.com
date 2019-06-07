@@ -30,4 +30,12 @@ class AbstractService
     {
         return $this->em->getRepository($class);
     }
+
+    /**
+     * @return XivapiWrapper
+     */
+    public function getXivapiWrapper(): XivapiWrapper
+    {
+        return new XivapiWrapper();
+    }
 }

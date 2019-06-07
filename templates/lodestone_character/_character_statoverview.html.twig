@@ -1,0 +1,184 @@
+<div id="gear-stats-{{ gearset.lodestoneClass.shortEn|lower }}" class="row gear-stats" style="{% if i<1 %}display:none;{% endif %}">
+    <div class="col-12">
+
+        <div class="row">
+            <div class="col-12 text-primary">
+                Attributes
+                <hr class="m-0 border-secondary">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Strength</div>
+                <div>{{ gearset.getAttribute('strength')}}</div>
+            </div>
+            <div class="col-6 d-flex justify-content-between">
+                <div>Intelligence</div>
+                <div>{{ gearset.getAttribute('intelligence')}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Dexterity</div>
+                <div>{{ gearset.getAttribute('dexterity')}}</div>
+            </div>
+            <div class="col-6 d-flex justify-content-between">
+                <div>Mind</div>
+                <div>{{ gearset.getAttribute('mind')}}</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Vitality</div>
+                <div>{{ gearset.getAttribute('vitality')}}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 text-primary">
+                Offensive Properties
+                <hr class="m-0 border-secondary">
+            </div>
+            <div class="col-6 text-primary">
+                Defensive Properties
+                <hr class="m-0 border-secondary">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Critical Hit</div>
+                <div>{{ gearset.getAttribute('criticalHit')}}</div>
+            </div>
+            <div class="col-6 d-flex justify-content-between">
+                <div>Defense</div>
+                <div>{{ gearset.getAttribute('defense')}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Determination</div>
+                <div>{{ gearset.getAttribute('determination')}}</div>
+            </div>
+            <div class="col-6 d-flex justify-content-between">
+                <div>Magic Defense</div>
+                <div>{{ gearset.getAttribute('magicDefense')}}</div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Direct Hit Rate</div>
+                <div>{{ gearset.getAttribute('directHitRate')}}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 text-primary">
+                Physical Properties
+                <hr class="m-0 border-secondary">
+            </div>
+            <div class="col-6 text-primary">
+                {% if gearset.lodestoneClass.getType() == 'crafter' %}
+                    Crafting
+                {% elseif gearset.lodestoneClass.getType() == 'gatherer' %}
+                    Gathering
+                {% else %}
+                    Mental Properties
+                {% endif %}
+                <hr class="m-0 border-secondary">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Attack Power</div>
+                <div>{{ gearset.getAttribute('attackPower')}}</div>
+            </div>
+            {% if gearset.lodestoneClass.getType() == 'crafter' %}
+                <div class="col-6 d-flex justify-content-between">
+                    <div>Craftsmanship</div>
+                    <div>{{ gearset.getAttribute('craftsmanship')}}</div>
+                </div>
+            {% elseif gearset.lodestoneClass.getType() == 'gatherer' %}
+                <div class="col-6 d-flex justify-content-between">
+                    <div>Gathering</div>
+                    <div>{{ gearset.getAttribute('gathering')}}</div>
+                </div>
+            {% else %}
+                <div class="col-6 d-flex justify-content-between">
+                    <div>Attack Magic Potency</div>
+                    <div>{{ gearset.getAttribute('attackMagicPotency')}}</div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Skill Speed</div>
+                <div>{{ gearset.getAttribute('skillSpeed')}}</div>
+            </div>
+            {% if gearset.lodestoneClass.getType() == 'crafter' %}
+                <div class="col-6 d-flex justify-content-between">
+                    <div>Control</div>
+                    <div>{{ gearset.getAttribute('control')}}</div>
+                </div>
+            {% elseif gearset.lodestoneClass.getType() == 'gatherer' %}
+                <div class="col-6 d-flex justify-content-between">
+                    <div>Perception</div>
+                    <div>{{ gearset.getAttribute('perception')}}</div>
+                </div>
+            {% else %}
+                <div class="col-6 d-flex justify-content-between">
+                    <div>Healing Magic Potency</div>
+                    <div>{{ gearset.getAttribute('healingMagicPotency')}}</div>
+                </div>
+            {% endif %}
+        </div>
+        {% if gearset.lodestoneClass.getType() != 'crafter' and gearset.lodestoneClass.getType() != 'gatherer' %}
+            <div class="row mb-2">
+                <div class="offset-6 col-6 d-flex justify-content-between">
+                    <div>Spell Speed</div>
+                    <div>{{ gearset.getAttribute('spellSpeed')}}</div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row mb-2">
+                <div class="offset-6 col-6 d-flex justify-content-between">
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-6 text-primary">
+                Gear
+                <hr class="m-0 border-secondary">
+            </div>
+            {% if gearset.lodestoneClass.getType() != 'crafter' and gearset.lodestoneClass.getType() != 'gatherer' %}
+                <div class="col-6 text-primary">
+                    Role
+                    <hr class="m-0 border-secondary">
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex justify-content-between">
+                <div>Average Item Level</div>
+                <div>{{ gearset.getAttribute('iLevel')}}</div>
+            </div>
+            {% if gearset.lodestoneClass.getType() != 'crafter' and gearset.lodestoneClass.getType() != 'gatherer' %}
+                <div class="col-6 d-flex justify-content-between">
+                    <div>Tenacity</div>
+                    <div>{{ gearset.getAttribute('tenacity')}}</div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            {% if gearset.lodestoneClass.getType() != 'crafter' and gearset.lodestoneClass.getType() != 'gatherer' %}
+                <div class="offset-6 col-6 d-flex justify-content-between">
+                    <div>Piety</div>
+                    <div>{{ gearset.getAttribute('piety')}}</div>
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>

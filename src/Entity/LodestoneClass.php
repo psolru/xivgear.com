@@ -98,9 +98,20 @@ class LodestoneClass
      */
     private $lodestoneCharacterMappings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\GearSet", mappedBy="lodestone_class")
+     */
+    private $gearSets;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $iconUrl;
+
     public function __construct()
     {
         $this->lodestoneCharacterMappings = new ArrayCollection();
+        $this->gearSets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -307,5 +318,64 @@ class LodestoneClass
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|GearSet[]
+     */
+    public function getGearSets(): Collection
+    {
+        return $this->gearSets;
+    }
+
+    public function addGearSet(GearSet $gearSet): self
+    {
+        if (!$this->gearSets->contains($gearSet)) {
+            $this->gearSets[] = $gearSet;
+            $gearSet->setLodestoneClass($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGearSet(GearSet $gearSet): self
+    {
+        if ($this->gearSets->contains($gearSet)) {
+            $this->gearSets->removeElement($gearSet);
+            // set the owning side to null (unless already changed)
+            if ($gearSet->getLodestoneClass() === $this) {
+                $gearSet->setLodestoneClass(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIconUrl(): ?string
+    {
+        return $this->iconUrl;
+    }
+
+    public function setIconUrl(string $iconUrl): self
+    {
+        $this->iconUrl = $iconUrl;
+
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        if ($this->isTank())
+            return 'tank';
+        if ($this->isHealer())
+            return 'healer';
+        if ($this->isDps())
+            return 'dps';
+        if ($this->isCrafter())
+            return 'crafter';
+        if ($this->isGatherer())
+            return 'gatherer';
+
+        return 'none';
     }
 }

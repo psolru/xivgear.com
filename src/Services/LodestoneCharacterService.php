@@ -6,25 +6,37 @@ namespace App\Services;
 use App\Entity\LodestoneCharacter;
 use App\Entity\LodestoneCharacterLodestoneClass;
 use App\Entity\LodestoneClass;
-use XIVAPI\XIVAPI;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class LodestoneCharacterService extends AbstractService
 {
     /**
-     * @var XIVAPI
+     * @var GearSetService
      */
-    private $api;
+    private $gearSetService;
+
+    /**
+     * LodestoneCharacterService constructor.
+     * @param EntityManagerInterface $em
+     * @param GearSetService $gearSetService
+     */
+    public function __construct(EntityManagerInterface $em, GearSetService $gearSetService)
+    {
+        parent::__construct($em);
+        $this->gearSetService = $gearSetService;
+    }
 
     /**
      * @param $lodestone_id
      * @return LodestoneCharacter
+     * @throws Exception
      */
     public function get($lodestone_id): LodestoneCharacter
     {
-        $character = $this->getRepository(LodestoneCharacter::class)->findOneByLodestoneId($lodestone_id);
+        $character = $this->getRepository(LodestoneCharacter::class)->findOneBy(['lodestone_id' => $lodestone_id]);
         if (!$character) {
             $character = $this->create($lodestone_id);
-            $character->setJustCreated(true);
         }
         return $character;
     }
@@ -32,11 +44,13 @@ class LodestoneCharacterService extends AbstractService
     /**
      * @param $lodestone_id
      * @return LodestoneCharacter
+     * @throws Exception
      */
     public function create($lodestone_id): LodestoneCharacter
     {
         $character = new LodestoneCharacter();
         $character->setLodestoneId($lodestone_id);
+        $character->setJustCreated(true);
 
         $character = $this->update($character);
 
@@ -47,11 +61,13 @@ class LodestoneCharacterService extends AbstractService
      * @param LodestoneCharacter $character
      * @param null $data
      * @return LodestoneCharacter
+     * @throws Exception
      */
     public function update(LodestoneCharacter $character, $data=null)
     {
-        if (!$data)
-            $data = $this->api->character->get($character->getLodestoneId(), [], true);
+        if (!$data) {
+            $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
+        }
 
         if ($data->Info->Character->State == 2) {
             $character->setName($data->Character->Name);
@@ -68,6 +84,7 @@ class LodestoneCharacterService extends AbstractService
                 $map = null;
                 if ($character->getId())
                     $map = $this->getRepository(LodestoneCharacterLodestoneClass::class)->findOneBy(['lodestone_character' => $character, 'lodestone_class' => $class]);
+
                 if (!$map) {
                     $map = new LodestoneCharacterLodestoneClass();
                     $map->setLodestoneCharacter($character);
@@ -78,7 +95,11 @@ class LodestoneCharacterService extends AbstractService
                 $map->setExperienceTotal($classJob->ExpLevelMax);
                 $this->em->persist($map);
             }
+
+            $gearset = $this->gearSetService->createOrUpdate($data->Character->GearSet, $character);
+            $character->addGearSet($gearset);
         }
+        die;
         $this->em->persist($character);
         $this->em->flush();
 

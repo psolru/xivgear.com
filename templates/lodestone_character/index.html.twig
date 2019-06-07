@@ -34,62 +34,56 @@
                 <table>
                     <tr>
                         <td><small><strong>Last xivGEAR update: </strong></small></td>
-                        <td><small>{$obj->updatedXivapi|datetime}</small></td>
+                        <td><small>{{ character.updatedAt|date }}</small></td>
                     </tr>
+                    {#
                     <tr>
                         <td><small><strong>Last xivAPI update: </strong></small></td>
                         <td><small>{$obj->xivapiUpdated|datetime}</small></td>
                     </tr>
+                    #}
                 </table>
             </div>
-            {#<div class="w-100">
+            <div class="w-100">
                 <div class="content-card">
                     <div class="row">
                         <div class="col-12">
                             <div class="title border-bottom border-primary mb-3">
-                                <h4>Gearsets</h4>
+                                <h4>GearSets</h4>
                             </div>
                             <div class="d-md-flex">
                                 <div style="min-width: 145px;max-width: 145px;">
                                     <div class="class-selector text-light pb-3 mb-3">
-                                        {foreach $obj->gearsets as $short => $gearset}
-                                        {$short=strtolower($short)}
-                                        {$type=FfxivClass::get($short)->getType()}
-                                        <div onclick="viewGear('{$short|he}')" class="px-3 mb-1 classtype-{$type|he} cuPo" style="background-image: url('https://xivapi.com{FfxivClass::get($short)->iconUrl|he}');">
-                                            {FfxivClass::get($short)->name_lang|he|ucwords}
+                                        {% for gearset in character.gearSets %}
+                                        <div
+                                            class="px-3 mb-1 classtype-{{ gearset.lodestoneClass.getType() }} cuPo"
+                                            onclick="viewGear('{{ gearset.lodestoneClass.shortEn|lower }}')"
+                                            style="background-image: url('https://xivapi.com{{ gearset.lodestoneClass.iconUrl }}');"
+                                        >
+                                            {{ gearset.lodestoneClass.nameEn|capitalize }}
                                         </div>
-                                        {/foreach}
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="px-3 w-100" style="min-width: 480px;">
-
-                                    {$i=0}
-                                    {foreach $obj->gearsets as $short => $gearset}
-                                    {$i=$i+1}
-                                    {$short=strtolower($short)}
-                                    {include
-                                    file="_character_statoverview.tpl"
-                                    i=$i
-                                    obj=$obj
-                                    short=$short
-                                    gearset=$gearset
-                                    }
-                                    {/foreach}
+                                    {% set i=0 %}
+                                    {% for gearset in character.gearSets %}
+                                        {% set i=i+1 %}
+                                        {{ include('lodestone_character/_character_statoverview.html.twig', {
+                                            'character': character,
+                                            'gearset':gearset,
+                                            'i': i
+                                        }) }}
+                                    {% endfor %}
                                 </div>
                                 <div style="min-width: 350px;max-width: 350px;">
                                     <div class="gear-list ml-auto">
-                                        {$i=0}
-                                        {foreach $obj->gearsets as $short => $gearset}
-                                        {$i=$i+1}
-                                        {$short=strtolower($short)}
-                                        {include
-                                        file="_character_gearoverview.tpl"
-                                        i=$i
-                                        obj=$obj
-                                        short=$short
-                                        gearset=$gearset
-                                        }
-                                        {/foreach}
+                                        {% for gearset in character.gearSets %}
+                                        {{ include('lodestone_character/_character_gearoverview.html.twig', {
+                                            'character': character,
+                                            'gearset':gearset
+                                        }) }}
+                                        {% endfor %}
                                     </div>
                                     <script>
                                         function viewGear(_class) {
@@ -111,7 +105,7 @@
                     </div>
                 </div>
 
-                {* <div class="content-card">
+                {# <div class="content-card">
                     <div class="row">
                         <div class="col-12">
                             <div class="title border-bottom border-primary ">
@@ -122,9 +116,9 @@
                             </table>
                         </div>
                     </div>
-                </div> *}
+                </div> #}
 
-            </div>#}
+            </div>
 
         </div>
     </main>

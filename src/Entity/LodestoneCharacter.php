@@ -55,9 +55,15 @@ class LodestoneCharacter
      */
     private $lodestoneClassMappings;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\GearSet", mappedBy="lodestone_character")
+     */
+    private $gearSets;
+
     public function __construct()
     {
         $this->lodestoneClassMappings = new ArrayCollection();
+        $this->gearSets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -143,6 +149,23 @@ class LodestoneCharacter
         return $this->lodestoneClassMappings;
     }
 
+    /**
+     * @param string $short
+     * @return LodestoneCharacterLodestoneClass|mixed|null
+     */
+    public function getLodestoneClassMapping(string $short): LodestoneCharacterLodestoneClass
+    {
+        foreach ($this->getLodestoneClassMappings() as $map) {
+            if ($map->getShort() == $short) {
+                return $map;
+            }
+        }
+    }
+
+    /**
+     * @param LodestoneCharacterLodestoneClass $lodestoneClassMapping
+     * @return LodestoneCharacter
+     */
     public function addLodestoneClassMapping(LodestoneCharacterLodestoneClass $lodestoneClassMapping): self
     {
         if (!$this->lodestoneClassMappings->contains($lodestoneClassMapping)) {
@@ -153,6 +176,10 @@ class LodestoneCharacter
         return $this;
     }
 
+    /**
+     * @param LodestoneCharacterLodestoneClass $lodestoneClassMapping
+     * @return LodestoneCharacter
+     */
     public function removeLodestoneClassMapping(LodestoneCharacterLodestoneClass $lodestoneClassMapping): self
     {
         if ($this->lodestoneClassMappings->contains($lodestoneClassMapping)) {
@@ -160,6 +187,37 @@ class LodestoneCharacter
             // set the owning side to null (unless already changed)
             if ($lodestoneClassMapping->getLodestoneCharacter() === $this) {
                 $lodestoneClassMapping->setLodestoneCharacter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GearSet[]
+     */
+    public function getGearSets(): Collection
+    {
+        return $this->gearSets;
+    }
+
+    public function addGearSet(GearSet $gearSet): self
+    {
+        if (!$this->gearSets->contains($gearSet)) {
+            $this->gearSets[] = $gearSet;
+            $gearSet->setLodestoneCharacter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGearSet(GearSet $gearSet): self
+    {
+        if ($this->gearSets->contains($gearSet)) {
+            $this->gearSets->removeElement($gearSet);
+            // set the owning side to null (unless already changed)
+            if ($gearSet->getLodestoneCharacter() === $this) {
+                $gearSet->setLodestoneCharacter(null);
             }
         }
 

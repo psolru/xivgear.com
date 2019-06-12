@@ -5,6 +5,7 @@ namespace App\Services;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use XIVAPI\XIVAPI;
 
 class AbstractService
 {
@@ -22,6 +23,11 @@ class AbstractService
         $this->em = $em;
     }
 
+    public function getXivapiWrapper()
+    {
+        return new XIVAPI();
+    }
+
     /**
      * @param $class
      * @return ObjectRepository
@@ -29,13 +35,5 @@ class AbstractService
     public function getRepository($class)
     {
         return $this->em->getRepository($class);
-    }
-
-    /**
-     * @return XivapiWrapper
-     */
-    public function getXivapiWrapper(): XivapiWrapper
-    {
-        return new XivapiWrapper();
     }
 }

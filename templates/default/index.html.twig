@@ -22,7 +22,7 @@
                     <h2 class="d-inline-block">
 					<span class="text-primary">
 						<i class="fa fa-users"></i><br>
-						123
+						{{ characterCount }}
 					</span>
                     </h2><br>
                     <span>Characters</span>
@@ -34,7 +34,7 @@
                     <h2 class="d-inline-block">
 					<span class="text-primary">
 						<img src="{{ asset('gfx/gearset_logo.png') }}" style="height: 33px;"><br>
-						123
+						{{ gearSetCount }}
 					</span>
                     </h2><br>
                     <span>GearSets</span>
@@ -99,23 +99,20 @@
                     <h2>Recently updated</h2>
                     <hr class="border-primary">
                     <table class="w-100">
-                        {#foreach $recentlyUpdated as $obj}
-                        <tr>
-                            <td class="pb-1">
-                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">
-                                    <img style="width: 40px;" src="{$obj->avatarUrl|he}">
-                                </a>
-                            </td>
-                            <td>{$obj->server|he}</td>
-                            <td>
-                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">{$obj->name|he}</a>
-                            </td>
-                            <td class=" text-right">{$obj->updatedXivapi|datetime|he}</td>
-                        </tr>
-                        {foreachelse}
-                        <h3 class="text-primary">Nothing here!</h3>
-                        Go up and search for a character to add it.
-                        {/foreach#}
+                        {% for character in recentlyUpdated %}
+                            <tr>
+                                <td class="pb-1">
+                                    <a href="{{ path('lodestone_character', {lodestone_id: character.lodestoneId }) }}">
+                                        <img style="width: 40px;" src="{{ character.avatarUrl }}">
+                                    </a>
+                                </td>
+                                <td>{{ character.server }}</td>
+                                <td>
+                                    <a href="{{ path('lodestone_character', {lodestone_id: character.lodestoneId }) }}">{{ character.name }}</a>
+                                </td>
+                                <td class=" text-right">{{  character.updatedAt|date }}</td>
+                            </tr>
+                        {% endfor %}
                     </table>
                 </div>
             </div>
@@ -124,23 +121,20 @@
                     <h2>Recently added</h2>
                     <hr class="border-primary">
                     <table class="w-100">
-                        {#foreach $recentlyCreated as $obj}
-                        <tr>
-                            <td class="pb-1">
-                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">
-                                    <img style="width: 40px;" src="{$obj->avatarUrl|he}">
-                                </a>
-                            </td>
-                            <td>{$obj->server|he}</td>
-                            <td>
-                                <a href="{$__baseurl}{urlfor site='character' obj=$obj}">{$obj->name|he}</a>
-                            </td>
-                            <td class=" text-right">{$obj->created|datetime|he}</td>
-                        </tr>
-                        {foreachelse}
-                        <h3 class="text-primary">Nothing here!</h3>
-                        Go up and search for a character to add it.
-                        {/foreach#}
+                        {% for character in recentlyAdded %}
+                            <tr>
+                                <td class="pb-1">
+                                    <a href="{{ path('lodestone_character', {lodestone_id: character.lodestoneId }) }}">
+                                        <img style="width: 40px;" src="{{ character.avatarUrl }}">
+                                    </a>
+                                </td>
+                                <td>{{ character.server }}</td>
+                                <td>
+                                    <a href="{{ path('lodestone_character', {lodestone_id: character.lodestoneId }) }}">{{ character.name }}</a>
+                                </td>
+                                <td class=" text-right">{{  character.createdAt|date }}</td>
+                            </tr>
+                        {% endfor %}
                     </table>
                 </div>
             </div>

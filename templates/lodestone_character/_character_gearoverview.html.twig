@@ -1,16 +1,13 @@
-<div id="gear-{{ gearset.lodestoneClass.shortEn|lower }}" class="gear-overview" style="{% if i<1 %}display:none;{% endif %}">
+<div id="gear-{{ gearset.lodestoneClass.shortEn|lower }}" class="gear-overview" style="{% if i>1 %}display:none;{% endif %}">
     <div class="gear-head d-flex align-items-center mb-1">
 
         {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
-            'character': character,
-            'gearset':gearset,
-            'i': i
+            'gearsetItem': gearset.getGearsetItemBySlot('mainHand'),
+            'slot': 'mainHand'
         }) }}
 
-        {include file="_character_gear_equipimage.tpl" obj=$gearset->mainHand slot='mainHand'}
-
         <div class="gear-title d-inline-block w-100">
-            <span class="small">Level:{$obj->classes[$short]->level|he}<br></span>
+            <span class="small">Level:{{ character.lodestoneClassMapping(gearset.lodestoneClass.shortEn|lower).Level }}<br></span>
             <img src="{{ asset('gfx/classjob/'~gearset.lodestoneClass.shortEn|lower~'.png') }}"> {{ gearset.lodestoneClass.nameEn|capitalize }}
         </div>
 
@@ -21,38 +18,77 @@
     </div>
     <div class="gear-content d-flex">
         <div class="main-slots d-inline-block d-flex flex-column">
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->head slot='head'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('head'),
+                'slot': 'head'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->body slot='body'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('body'),
+                'slot': 'body'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->hands slot='hands'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('hands'),
+                'slot': 'hands'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->waist slot='waist'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('waist'),
+                'slot': 'waist'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->legs slot='legs'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('legs'),
+                'slot': 'legs'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->feet slot='feet'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('feet'),
+                'slot': 'feet'
+            }) }}
         </div>
         <div class="portrait d-inline-block position-relative">
-            <img style="height: 340px;width: 250px;" class="shadow rounded" src="{$__baseurl}data/gearset/{$obj->ffxivId|he}_{$short|he}.jpg"/>
+            <img style="height: 340px;width: 250px;" class="shadow rounded" src="{{ asset('data/gearset/'~character.lodestoneId~'_'~gearset.lodestoneClass.shortEn|lower~'.jpg?t='~gearset.updatedAt|date('')) }}"/>
             <div class="ilevel position-absolute">
-                iLvl: {$gearset->iLevel|he}
+                iLvl: {{ gearset.iLevel }}
             </div>
         </div>
         <div class="sub-slots d-inline-block d-flex flex-column">
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->offHand slot='offHand'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('offHand'),
+                'slot': 'offHand'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->earrings slot='earrings'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('earrings'),
+                'slot': 'earrings'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->necklace slot='necklace'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('necklace'),
+                'slot': 'necklace'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->bracelets slot='bracelets'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('bracelets'),
+                'slot': 'bracelets'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->ring1 slot='ring1'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('ring1'),
+                'slot': 'ring1'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->ring2 slot='ring2'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('ring2'),
+                'slot': 'ring2'
+            }) }}
 
-            {include file="_character_gear_equipimage.tpl" obj=$gearset->soulCrystal slot='soulCrystal'}
+            {{ include('lodestone_character/_character_gear_equipimage.html.twig', {
+                'gearsetItem': gearset.getGearsetItemBySlot('soulCrystal'),
+                'slot': 'soulCrystal'
+            }) }}
 
         </div>
     </div>

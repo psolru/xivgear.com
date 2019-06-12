@@ -3,29 +3,19 @@
 
 namespace App\Services;
 
-use App\Entity\GearSet;
 use App\Entity\GearsetItem;
-use stdClass;
 
 class GearsetItemService extends AbstractService
 {
     /**
-     * @param stdClass $data
-     * @param GearSet $gearSet
-     * @return mixed
+     * @param array $criteria
+     * @return GearsetItem
      */
-    public function createOrUpdate(stdClass $data, GearSet $gearSet)
+    public function getOrCreate(array $criteria): GearsetItem
     {
-        dump($data);die;
-        $gearsetItem = $this->em->getRepository(GearsetItem::class)->findOneBy(['gearset' => $gearSet, 'slot' => $data->Slot]);
-        if (!$gearsetItem )
-            $gearsetItem = new GearsetItem();
-        $gearsetItem->insertXivapiFields($data);
-
-        $gearsetItem->setGearset($gearSet);
-
-        $this->em->persist($gearsetItem);
-
-        return $gearsetItem;
+        $gearsetItem = $this->getRepository(GearsetItem::class)->findOneBy($criteria);
+        if ($gearsetItem)
+            return $gearsetItem;
+        return new GearsetItem();
     }
 }

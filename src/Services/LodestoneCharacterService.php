@@ -69,6 +69,7 @@ class LodestoneCharacterService extends AbstractService
             $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
         }
 
+        $character->setXivapiStatus($data->Info->Character->State);
         if ($data->Info->Character->State == 2) {
             $character->setName($data->Character->Name);
             $character->setServer($data->Character->Server);
@@ -94,12 +95,16 @@ class LodestoneCharacterService extends AbstractService
                 $map->setExperience($classJob->ExpLevel);
                 $map->setExperienceTotal($classJob->ExpLevelMax);
                 $this->em->persist($map);
+
+                $character->addLodestoneClassMapping($map);
             }
 
             $gearset = $this->gearSetService->createOrUpdate($data->Character->GearSet, $character);
             $character->addGearSet($gearset);
         }
-        die;
+        elseif ($data->Info->Character->State == 1) {
+            $character->setXivapiAdded(1);
+        }
         $this->em->persist($character);
         $this->em->flush();
 

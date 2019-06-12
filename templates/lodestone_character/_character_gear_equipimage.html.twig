@@ -1,106 +1,107 @@
-{$uiDetails=uniqid('equip-details-'|cat:he($slot)|cat:'-')}
+{% set uiDetails=random() %}
 
-{if $slot =='mainHand'}
+{% if slot == 'mainHand' %}
 <div class="equip-image gear-weapon d-inline-block gear-mainHand shadow">
-    {else}
-    <div class="equip-image gear-{$slot}">
-        {/if}
-        <img class="shadow {if !isset($obj)}placeholder{/if}" src="{if isset($obj)}https://xivapi.com{$obj.obj->iconUrl|he}{/if}">
-        {if isset($obj)}
-        <img class="equip-image-glossy" style="top:{if $slot=='mainHand'}4px{else}-1px{/if};" src="https://img.finalfantasyxiv.com/lds/h/J/-A7DYl4vvLtvGz_nshoUsqtrEc.png">
-        <div id="{$uiDetails|he}" class="equip-details shadow bg-dark rounded p-2 border border-primary" style="cursor:default;position: absolute;z-index: 1;top: 0;right: 44px;width: 350px;{if $slot != ''}display: none;{/if}">
+{% else %}
+<div class="equip-image gear-{{ slot }}">
+{% endif %}
+
+    <img class="shadow {% if gearsetItem is null %}placeholder{% endif %}" src="{% if gearsetItem is not null %}https://xivapi.com{{ gearsetItem.Item.iconUrl }}{% endif %}">
+    {% if gearsetItem is not null %}
+        <img class="equip-image-glossy" style="top:{% if slot == 'mainHand' %}4px{% else %}-1px{% endif %};" src="https://img.finalfantasyxiv.com/lds/h/J/-A7DYl4vvLtvGz_nshoUsqtrEc.png">
+        <div id="{{ uiDetails }}" class="equip-details shadow bg-dark rounded p-2 border border-primary" style="cursor:default;position: absolute;z-index: 1;top: 0;right: 44px;width: 350px;{% if slot != '' %}display: none;{% endif %}">
             <div class="d-flex">
-                <img class="mr-2 mb-1" src="https://xivapi.com{$obj.obj->iconUrl|he}">
+                <img class="mr-2 mb-1" src="https://xivapi.com{{ gearsetItem.Item.iconUrl }}">
                 <div>
-                    <span class="text-primary">{$obj.obj->name_en|he}</span><br>
+                    <span class="text-primary">{{ gearsetItem.Item.nameEn }}</span><br>
                 </div>
             </div>
             <div class="rounded px-2 d-flex justify-content-between mb-2" style="background-color: #242628;">
-                <span class="small">Item Level: {$obj.obj->levelItem|he}</span>
+                <span class="small">Item Level: {{ gearsetItem.Item.levelItem }}</span>
             </div>
             <div style="font-size: 90%;">
-                <span id="{$uiDetails|he}-classjobs"></span><br>
-                Lvl: {$obj.obj->levelEquip|he}
+                <span id="{{ uiDetails }}-classjobs"></span><br>
+                Lvl: {{ gearsetItem.Item.levelEquip }}
             </div>
             <hr class="m-0 mb-2 border-light">
-            <div id="{$uiDetails|he}-stats"><i class="fas fa-sm fa-spinner fa-pulse"></i></div>
-            {if $obj.materia}
-            <hr class="m-0 mb-2 border-light">
-            <table>
-                {/if}
-                {foreach $obj.materia as $key => $item}
+            <div id="{{ uiDetails }}-stats"><i class="fas fa-sm fa-spinner fa-pulse"></i></div>
+            {% if gearsetItem.getMateria %}
+                <hr class="m-0 mb-2 border-light">
+                <table>
+            {% endif %}
+                {% for materia in gearsetItem.getMateria %}
                 <tr>
                     <td>
-                        <img class="mb-1" style="height: 25px; width: 25px;" src="https://xivapi.com{$item->iconUrl|he}">
+                        <img class="mb-1" style="height: 25px; width: 25px;" src="https://xivapi.com{{ materia.iconUrl }}">
                     </td>
                     <td class="py-0 pl-1">
-                        {$item->name_en|he}
+                        {{ materia.nameEn }}
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="line-height: 0;" class="pb-3"><span id="{$uiDetails|he}-mat{$key|num}-stats" class="pl-2 small"><i class="fas fa-sm fa-spinner fa-pulse"></i></span></td>
+                    <td style="line-height: 0;" class="pb-3">
+                        <span id="{{ uiDetails }}-mat{{ loop.index0 }}-stats" class="pl-2 small"><i class="fas fa-sm fa-spinner fa-pulse"></i></span>
+                    </td>
                 </tr>
-                {/foreach}
-                {if $obj.materia}
-            </table>
-            {/if}
+                {% endfor %}
+            {% if gearsetItem.getMateria %}
+                </table>
+            {% endif %}
             <hr class="mt-1 mb-2 border-light">
-            <small class="small"><a target="_blank" href="https://garlandtools.org/db/#item/{$obj.obj->ffxivId|num}">Details (Garland Tool)</a></small><br>
-            <small class="small"><a target="_blank" href="https://ffxivteamcraft.com/db/{$__lang}/item/{$obj.obj->ffxivId|num}/{$obj.obj->name_en|ue}">Details (Teamcraft)</a></small>
+            <small class="small"><a target="_blank" href="https://garlandtools.org/db/#item/{{ gearsetItem.Item.lodestoneId }}">Details (Garland Tool)</a></small><br>
+            <small class="small"><a target="_blank" href="https://ffxivteamcraft.com/db/en/item/{{ gearsetItem.Item.lodestoneId }}/{{ gearsetItem.Item.nameEn }}">Details (Teamcraft)</a></small>
         </div>
-        {#
         <script>
             (function () {
-                var interval = setInterval(function(){
-                    if ($('#{$uiDetails|he}').css('display') == 'block') {
+                let interval = setInterval(function(){
+                    if ($('#{{ uiDetails }}').css('display') == 'block') {
                         clearInterval(interval)
 
-                        $.post('https://xivapi.com/item/{$obj.obj->ffxivId|num}?columns=ClassJobCategory.Name,BaseParam0.Name_{$__lang|he},BaseParamValue0,BaseParam1.Name_{$__lang|he},BaseParamValue1,BaseParam2.Name_{$__lang|he},BaseParamValue2,BaseParam3.Name_{$__lang|he},BaseParamValue3,BaseParam4.Name_{$__lang|he},BaseParamValue4,BaseParamValue5.Name_{$__lang|he}', function(res, ok) {
+                        $.post('https://xivapi.com/item/{{ gearsetItem.Item.lodestoneId }}?columns=ClassJobCategory.Name,BaseParam0.Name_en,BaseParamValue0,BaseParam1.Name_en,BaseParamValue1,BaseParam2.Name_en,BaseParamValue2,BaseParam3.Name_en,BaseParamValue3,BaseParam4.Name_en,BaseParamValue4,BaseParamValue5.Name_en', function(res, ok) {
                             if (ok == 'success') {
-                                var list = new Array()
+                                let list = new Array()
                                 // set classjobs
-                                $('#{$uiDetails|he}-classjobs').html(res.ClassJobCategory.Name)
+                                $('#{{ uiDetails }}-classjobs').html(res.ClassJobCategory.Name)
 
                                 // set stats
-                                for (var i=0;i<6;i++) {
-                                    if (!res['BaseParam'+i].Name_{$__lang|he})
+                                for (let i=0;i<6;i++) {
+                                    if (!res['BaseParam'+i].Name_en)
                                     break
 
                                     list.push({
-                                        name: res['BaseParam'+i].Name_{$__lang|he},
+                                        name: res['BaseParam'+i].Name_en,
                                     value: res['BaseParamValue'+i]
                                 })
                                 }
 
-                                $('#{$uiDetails|he}-stats').html(
+                                $('#{{ uiDetails }}-stats').html(
                                     ejs.render(`
-									<div class="row mb-2">
-										<% list.forEach(function(item){ %>
-											<div class="col-6" style="line-height:1.2;">
-												<span class="small"><strong><%= item.name %></strong> + <%= item.value %></span>
-											</div>
-										<% }) %>
-									</div>
-								`, { list } )
+                                    <div class="row mb-2">
+                                        <% list.forEach(function(item){ %>
+                                            <div class="col-6" style="line-height:1.2;">
+                                                <span class="small"><strong><%= item.name %></strong> + <%= item.value %></span>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                `, { list } )
                                 )
 
-                                {foreach $obj.materia as $key => $item}
+                                {% for materia in gearsetItem.getMateria %}
                                 setTimeout(function() {
-                                    $.post('https://xivapi.com/item/{$item->ffxivId|num}?columns=Materia.BaseParam.Name,Materia.Value', function(res, ok) {
+                                    $.post('https://xivapi.com/item/{{ materia.lodestoneId }}?columns=Materia.BaseParam.Name,Materia.Value', function(res, ok) {
                                         if (ok == 'success') {
-                                            $('#{$uiDetails|he}-mat{$key|num}-stats').html('- <strong>'+res.Materia.BaseParam.Name+'</strong> +'+res.Materia.Value)
+                                            $('#{{ uiDetails }}-mat{$key|num}-stats').html('- <strong>'+res.Materia.BaseParam.Name+'</strong> +'+res.Materia.Value)
                                         }
                                     })
                                 }, 200)
-                                {/foreach}
+                                {% endfor %}
                                 }
                             })
                     }
                 }, 200)
             }())
         </script>
-        #}
-        {/if}
-    </div>
+    {% endif %}
+
 </div>

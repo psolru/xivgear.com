@@ -276,4 +276,17 @@ class GearSet
 
         return $this;
     }
+
+    /**
+     * @param string $slot
+     * @return GearsetItem|null
+     */
+    public function getGearsetItemBySlot(string $slot): ?GearsetItem
+    {
+        foreach ($this->getGearsetItems() as $gearsetItem) {
+            if ($slot == $gearsetItem->getSlot())
+                return $gearsetItem;
+        }
+        return null;
+    }
 }

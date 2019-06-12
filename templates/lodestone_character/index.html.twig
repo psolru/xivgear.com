@@ -78,11 +78,14 @@
                                 </div>
                                 <div style="min-width: 350px;max-width: 350px;">
                                     <div class="gear-list ml-auto">
+                                        {% set i=0 %}
                                         {% for gearset in character.gearSets %}
-                                        {{ include('lodestone_character/_character_gearoverview.html.twig', {
-                                            'character': character,
-                                            'gearset':gearset
-                                        }) }}
+                                            {% set i=i+1 %}
+                                            {{ include('lodestone_character/_character_gearoverview.html.twig', {
+                                                'character': character,
+                                                'gearset':gearset,
+                                                'i': i
+                                            }) }}
                                         {% endfor %}
                                     </div>
                                     <script>

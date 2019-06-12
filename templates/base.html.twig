@@ -46,11 +46,15 @@
     {# Custom CSS #}
     <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
 
+    {# Custom JS #}
+    <script src="{{ asset('js/ejs.min.js') }}"></script>
+    <script src="{{ asset('js/Fayt.js') }}"></script>
+    <script src="{{ asset('js/mainFayt.js') }}"></script>
 </head>
 <body class="d-flex flex-column h-100">
 
     {% if app.environment == 'dev' %}
-    <div class="position-absolute text-danger" style="top:13px;right: 100px;z-index: 10000">
+    <div class="position-absolute text-danger" style="top:13px;right: 100px;z-index: 10000;">
         <h1>DEV-SYSTEM</h1>
     </div>
     {% endif %}
@@ -58,7 +62,6 @@
     <header class="siteheader d-flex bg-dark py-2 px-3 position-fixed w-100 shadow">
         <div class="brand">
             <a href="{{ path('home') }}">
-
                 <span class="brand-name text-primary mb-0">XIVGEAR <small style="font-size: 50%;"><small>v</small>1.1.0</small></span>
                 <small class="text-muted">
                     Your #1 FFXIV stalker tool <img height="20px" src="{{ asset('gfx/kappa.png') }}"/>
@@ -76,7 +79,7 @@
                 ></div>
             </div>
             <div class="login">
-                {# {if !$loginUser}
+                {#{if !$loginUser}
                 <a href="{$__baseurl}{urlfor site='discord_login'}" class="btn btn-secondary w-100">
                     Login via Discord
                 </a>
@@ -85,10 +88,11 @@
                     <img class="rounded-circle" src="{$loginUser->getDiscordAvatarUrl()}"/>
                     <span class="text-muted">{$loginUser->username|he}</span>
                 </a>
-                {/if} #}
+                {/if}#}
             </div>
         </div>
     </header>
+
     {% block body %}{% endblock %}
 
     <footer class="sitefooter mt-auto py-2 px-3 text-right">
@@ -96,5 +100,6 @@
                 ALL FINAL FANTASY XIV © 2010 - 2019 MATERIAL IS OWNED BY SQUARE ENIX CO., LTD. All Rights Reserved.
             </small></span>
     </footer>
+
 </body>
 </html>

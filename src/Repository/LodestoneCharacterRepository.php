@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\LodestoneCharacter;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,6 +22,11 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
         parent::__construct($registry, LodestoneCharacter::class);
     }
 
+    /**
+     * @param $lodestone_id
+     * @return mixed
+     * @throws NonUniqueResultException
+     */
     public function findOneByLodestoneId($lodestone_id)
     {
         return $this->createQueryBuilder('lc')
@@ -26,6 +34,41 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
             ->setParameter('id', $lodestone_id)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function getRecentlyAdded()
+    {
+        return $this->createQueryBuilder('lc')
+            ->orderBy('lc.createdAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getRecentlyUpdated()
+    {
+        return $this->createQueryBuilder('lc')
+            ->orderBy('lc.updatedAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param int $itemCount
+     * @return mixed
+     * @throws Exception
+     */
+    public function getUpdateQueue(int $itemCount)
+    {
+        $qb = $this->createQueryBuilder('lc');
+
+        return $qb->andWhere('lc.updatedAt <= :date')
+            ->setParameter('date', new DateTime('- 6 hours'))
+            ->orderBy('lc.updatedAt', 'ASC')
+            ->setMaxResults($itemCount)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

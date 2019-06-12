@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\GearSetRepository;
+use App\Repository\LodestoneCharacterRepository;
 use App\Services\LodestoneCharacterService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,9 +29,9 @@ class LodestoneCharacterController extends AbstractController
     /**
      * @param $lodestone_id
      * @return Response
+     * @throws Exception
      * @Route("/Character/{lodestone_id}", name="lodestone_character")
      * @Route("/character/{lodestone_id}")
-     * @throws Exception
      */
     public function index($lodestone_id)
     {

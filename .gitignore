@@ -1,4 +1,8 @@
-### phpstorm configs###
+### user data ###
+/public/data/gearset/*
+###
+
+### phpstorm configs ###
 .idea
 ###
 
@@ -19,3 +23,5 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+
+!**/.gitkeep

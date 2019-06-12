@@ -3,11 +3,10 @@
 
 namespace App\Services;
 
-
 use App\Entity\GearSet;
-use App\Entity\GearsetItem;
 use App\Entity\LodestoneCharacter;
 use App\Entity\LodestoneClass;
+use App\Services\Lodestone\ItemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use stdClass;
@@ -15,25 +14,31 @@ use stdClass;
 class GearSetService extends AbstractService
 {
     /**
+     * @var GearsetItemService
+     */
+    private $gearsetItemService;
+    /**
      * @var ItemService
      */
     private $itemService;
     /**
-     * @var GearsetItem
+     * @var string
      */
-    private $gearsetItemService;
+    private $projectDir;
 
     /**
      * GearSetService constructor.
      * @param EntityManagerInterface $em
-     * @param ItemService $itemService
      * @param GearsetItemService $gearsetItemService
+     * @param ItemService $itemService
+     * @param string $projectDir
      */
-    public function __construct(EntityManagerInterface $em, ItemService $itemService, GearsetItemService $gearsetItemService)
+    public function __construct(EntityManagerInterface $em, GearsetItemService $gearsetItemService, ItemService $itemService, string $projectDir)
     {
         parent::__construct($em);
-        $this->itemService = $itemService;
         $this->gearsetItemService = $gearsetItemService;
+        $this->itemService = $itemService;
+        $this->projectDir = $projectDir;
     }
 
     /**
@@ -66,12 +71,36 @@ class GearSetService extends AbstractService
 
         foreach ($gearsetData->Gear as $slot => $gear) {
             $slot = lcfirst($slot);
-            $gear->Item->Slot = $slot;
 
-            $this->gearsetItemService->createOrUpdate($gear->Item, $gearSet);
+            $gearsetItem = $this->gearsetItemService->getOrCreate(['slot' => $slot, 'gearset' => $gearSet]);
+            $gearsetItem->setGearset($gearSet)
+                ->setSlot($slot);
 
-            die();
+            $item = $this->itemService->getOrCreate(['lodestone_id' => $gear->Item->ID])
+                ->setLodestoneId($gear->Item->ID)
+                ->setNameEn($gear->Item->Name)
+                ->setLevelItem($gear->Item->LevelItem)
+                ->setLevelEquip($gear->Item->LevelEquip)
+                ->setCategoryId($gear->Item->ItemUICategory->ID)
+                ->setIconUrl($gear->Item->Icon);
+
+            $this->em->persist($item);
+            $gearsetItem->setItem($item);
+
+            foreach($gear->Materia as $materia) {
+                $materiaItem = $this->itemService->getOrCreate(['lodestone_id' => $materia->ID])
+                    ->setLodestoneId($materia->ID)
+                    ->setNameEn($materia->Name)
+                    ->setIconUrl($materia->Icon);
+                $this->em->persist($materiaItem);
+
+                $gearsetItem->addMateria($materiaItem);
+            }
+            $this->em->persist($gearsetItem);
         }
+
+        // store Character Image
+        file_put_contents($this->projectDir.'/public/data/gearset/'.$character->getLodestoneId().'_'.strtolower($gearSet->getLodestoneClass()->getShortEn()).'.jpg', file_get_contents($character->getPortraitUrl().'?='.time()));
 
         $this->em->persist($gearSet);
         return $gearSet;

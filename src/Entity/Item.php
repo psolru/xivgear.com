@@ -51,7 +51,7 @@ class Item
     private $name_fr;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $category_id;
 

@@ -23,9 +23,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
     private $lcRepository;
     /** @var LodestoneCharacterService */
     private $lcService;
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     private $em;
 
     /**
@@ -63,7 +61,6 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $queue = $this->lcRepository->getUpdateQueue(10);
-        dump($queue);die;
 
         $ids = [];
         /** @var $character LodestoneCharacter */
@@ -73,7 +70,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
 
         $ids = implode(',', $ids);
 
-        $url = 'https://xivapi.com/characters?private_key=5752bf6fa14742bd9611003d0dc05e34235e4d06ea1c4df8975d684480577ea2&extended=1&ids='.$ids;
+        $url = 'https://xivapi.com/characters?private_key='.$_ENV['XIVAPI_KEY'].'&extended=1&ids='.$ids;
         $res = json_decode(file_get_contents($url));
 
         foreach ($res as $data)
@@ -91,9 +88,9 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
             catch (Exception $err) {
                 echo $err->getMessage()."\n\n";
             }
-            $character->setUpdatedAt(new DateTime('Y-m-d H:i:s'));
+            $character->setUpdatedAt(new DateTime());
             $this->em->persist($character);
-            $thi->em->flush();
+            $this->em->flush();
         }
     }
 }

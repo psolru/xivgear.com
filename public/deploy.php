@@ -18,7 +18,7 @@
 		'git submodule update',
 		'git submodule status',
 		'./bin/console doctrine:migrations:migrate',
-		'composer install'.
+		'composer install',
 	);
 	// Run the commands for output
 	$output = '';

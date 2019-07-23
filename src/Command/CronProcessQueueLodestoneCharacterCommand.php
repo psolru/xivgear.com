@@ -95,5 +95,8 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
                 $this->em->flush();
             }
         }
+        else {
+            echo "Nothing to update.\n";
+        }
     }
 }

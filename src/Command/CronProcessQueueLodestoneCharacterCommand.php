@@ -62,35 +62,38 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
     {
         $queue = $this->lcRepository->getUpdateQueue(10);
 
-        $ids = [];
-        /** @var $character LodestoneCharacter */
-        foreach ($queue as $character) {
-            $ids[] = $character->getLodestoneId();
-        }
+        if ($queue) {
 
-        $ids = implode(',', $ids);
-
-        $url = 'https://xivapi.com/characters?private_key='.$_ENV['XIVAPI_KEY'].'&extended=1&ids='.$ids;
-        $res = json_decode(file_get_contents($url));
-
-        foreach ($res as $data)
-        {
-            $character = array_values(array_filter($queue, function($character) use ($data) {
-                /** @var $character LodestoneCharacter */
-                return $character->getLodestoneId() == $data->Character->ID;
-            }))[0];
-
-            echo $character->getLodestoneId().'-'.$character->getName().'@'.$character->getServer()."\n";
-            try {
-                $this->lcService->update($character, $data);
-                echo "\n";
+            $ids = [];
+            /** @var $character LodestoneCharacter */
+            foreach ($queue as $character) {
+                $ids[] = $character->getLodestoneId();
             }
-            catch (Exception $err) {
-                echo $err->getMessage()."\n\n";
+
+            $ids = implode(',', $ids);
+
+            $url = 'https://xivapi.com/characters?private_key='.$_ENV['XIVAPI_KEY'].'&extended=1&ids='.$ids;
+            $res = json_decode(file_get_contents($url));
+
+            foreach ($res as $data)
+            {
+                $character = array_values(array_filter($queue, function($character) use ($data) {
+                    /** @var $character LodestoneCharacter */
+                    return $character->getLodestoneId() == $data->Character->ID;
+                }))[0];
+
+                echo $character->getLodestoneId().'-'.$character->getName().'@'.$character->getServer()."\n";
+                try {
+                    $this->lcService->update($character, $data);
+                    echo "\n";
+                }
+                catch (Exception $err) {
+                    echo $err->getMessage()."\n\n";
+                }
+                $character->setUpdatedAt(new DateTime());
+                $this->em->persist($character);
+                $this->em->flush();
             }
-            $character->setUpdatedAt(new DateTime());
-            $this->em->persist($character);
-            $this->em->flush();
         }
     }
 }

@@ -60,7 +60,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $queue = $this->lcRepository->getUpdateQueue(10);
+        $queue = $this->lcRepository->getUpdateQueue(20);
 
         if ($queue) {
 
@@ -77,10 +77,11 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
 
             foreach ($res as $data)
             {
-                $character = array_values(array_filter($queue, function($character) use ($data) {
-                    /** @var $character LodestoneCharacter */
-                    return $character->getLodestoneId() == $data->Character->ID;
-                }))[0];
+                foreach ($queue as $character)
+                {
+                    if ($character->getLodestoneId() == $data->Character->ID)
+                        break;
+                }
 
                 echo $character->getLodestoneId().'-'.$character->getName().'@'.$character->getServer()."\n";
                 try {

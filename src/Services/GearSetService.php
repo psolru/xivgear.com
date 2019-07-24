@@ -67,8 +67,9 @@ class GearSetService extends AbstractService
             );
             $gearSet->setAttribute($name, $attribute->Value);
         }
-        $gearSet->setILevel(0);
 
+        $total = 0;
+        $offHand = false;
         foreach ($gearsetData->Gear as $slot => $gear) {
             $slot = lcfirst($slot);
 
@@ -97,7 +98,15 @@ class GearSetService extends AbstractService
                 $gearsetItem->addMateria($materiaItem);
             }
             $this->em->persist($gearsetItem);
+
+            $total += $item->getLevelItem();
+            if ($slot == 'offHand')
+                $offHand = true;
         }
+
+        $gearSet->setILevel(
+            $offHand ? floor($total/13) : floor($total/12)
+        );
 
         // store Character Image
         file_put_contents($this->projectDir.'/public/data/gearset/'.$character->getLodestoneId().'_'.strtolower($gearSet->getLodestoneClass()->getShortEn()).'.jpg', file_get_contents($character->getPortraitUrl().'?='.time()));

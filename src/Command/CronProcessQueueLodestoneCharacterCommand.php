@@ -86,10 +86,9 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
                 echo $character->getLodestoneId().'-'.$character->getName().'@'.$character->getServer()."\n";
                 try {
                     $this->lcService->update($character, $data);
-                    echo "\n";
                 }
                 catch (Exception $err) {
-                    echo $err->getMessage()."\n\n";
+                    echo $err->getMessage()."\n";
                 }
                 $character->setUpdatedAt(new DateTime());
                 $this->em->persist($character);

@@ -99,7 +99,9 @@ class GearSetService extends AbstractService
             }
             $this->em->persist($gearsetItem);
 
-            $total += $item->getLevelItem();
+            if ($slot != 'soulCrystal')
+                $total += $item->getLevelItem();
+
             if ($slot == 'offHand')
                 $offHand = true;
         }

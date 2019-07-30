@@ -24,7 +24,7 @@ class DefaultController extends AbstractController
             'controller_name' => 'DefaultController',
             'recentlyAdded' => $lodestoneCharacterRepository->getRecentlyAdded(),
             'recentlyUpdated' => $lodestoneCharacterRepository->getRecentlyUpdated(),
-            'characterCount' => count($lodestoneCharacterRepository->findAll()),
+            'characterCount' => count($lodestoneCharacterRepository->findAllActiveOnes()),
             'gearSetCount' => count($gearSetRepository->findAll())
         ]);
     }

@@ -9775,7 +9775,7 @@ h3 {
 /* MAIN CONTENT */
 .sitemain {
   padding: 100px 20px 0 280px;
-  padding-left: 10px !important;
+  padding-left: 20px !important;
   -moz-transition: padding-left 0.3s ease-in;
   -o-transition: padding-left 0.3s ease-in;
   -webkit-transition: padding-left 0.3s ease-in;

@@ -71,18 +71,6 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @return mixed
-     */
-    public function findAllActiveOnes()
-    {
-        $qb = $this->createQueryBuilder('lc');
-
-        return $qb->andWhere('lc.xivapiStatus = 2')
-            ->getQuery()
-            ->getResult();
-    }
-
     // /**
     //  * @return LodestoneCharacter[] Returns an array of LodestoneCharacter objects
     //  */

@@ -60,7 +60,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $queue = $this->lcRepository->getUpdateQueue(10);
+        $queue = $this->lcRepository->getUpdateQueue(5);
 
         if ($queue) {
 
@@ -72,7 +72,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
 
             $ids = implode(',', $ids);
 
-            $url = 'https://xivapi.com/characters?private_key='.$_ENV['XIVAPI_KEY'].'&extended=1&ids='.$ids;
+            $url = 'https://xivapi.com/characters?ids='.$ids.'&extended=1&private_key='.$_ENV['XIVAPI_KEY'];
             $res = json_decode(file_get_contents($url));
 
             foreach ($res as $data)

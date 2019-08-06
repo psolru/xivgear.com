@@ -60,16 +60,6 @@ class LodestoneCharacter
      */
     private $gearSets;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $xivapiStatus;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $xivapiAdded;
-
     public function __construct()
     {
         $this->lodestoneClassMappings = new ArrayCollection();
@@ -231,30 +221,6 @@ class LodestoneCharacter
                 $gearSet->setLodestoneCharacter(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getXivapiStatus(): ?int
-    {
-        return $this->xivapiStatus;
-    }
-
-    public function setXivapiStatus(int $xivapiStatus): self
-    {
-        $this->xivapiStatus = $xivapiStatus;
-
-        return $this;
-    }
-
-    public function getXivapiAdded(): ?bool
-    {
-        return $this->xivapiAdded;
-    }
-
-    public function setXivapiAdded(bool $xivapiAdded): self
-    {
-        $this->xivapiAdded = $xivapiAdded;
 
         return $this;
     }

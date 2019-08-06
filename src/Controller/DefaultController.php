@@ -11,6 +11,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
+     * @Route("/", name="api_home", host="api.{domain}")
+     * @return Response
+     */
+    public function api_index() {
+        return $this->render('default/api_index.html.twig');
+    }
+
+    /**
      * @Route("/", name="home")
      * @param LodestoneCharacterRepository $lodestoneCharacterRepository
      * @param GearSetRepository $gearSetRepository
@@ -24,7 +32,7 @@ class DefaultController extends AbstractController
             'controller_name' => 'DefaultController',
             'recentlyAdded' => $lodestoneCharacterRepository->getRecentlyAdded(),
             'recentlyUpdated' => $lodestoneCharacterRepository->getRecentlyUpdated(),
-            'characterCount' => count($lodestoneCharacterRepository->findAllActiveOnes()),
+            'characterCount' => count($lodestoneCharacterRepository->findAll()),
             'gearSetCount' => count($gearSetRepository->findAll())
         ]);
     }

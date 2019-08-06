@@ -69,42 +69,35 @@ class LodestoneCharacterService extends AbstractService
             $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
         }
 
-        $character->setXivapiStatus($data->Info->Character->State);
-        if ($data->Info->Character->State == 2) {
-            $character->setName($data->Character->Name);
-            $character->setServer($data->Character->Server);
-            $character->setAvatarUrl($data->Character->Avatar);
-            $character->setPortraitUrl($data->Character->Portrait);
+        $character->setName($data->Character->Name);
+        $character->setServer($data->Character->Server);
+        $character->setAvatarUrl($data->Character->Avatar);
+        $character->setPortraitUrl($data->Character->Portrait);
 
-            foreach ($data->Character->ClassJobs as $idMashup => $classJob) {
-                $classId = explode('_', $idMashup)[1];
-                $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classId]);
-                if (!$class)
-                    continue;
+        foreach ($data->Character->ClassJobs as $classJob) {
+            $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classJob->Job->ID]);
+            if (!$class)
+                continue;
 
-                $map = null;
-                if ($character->getId())
-                    $map = $this->getRepository(LodestoneCharacterLodestoneClass::class)->findOneBy(['lodestone_character' => $character, 'lodestone_class' => $class]);
+            $map = null;
+            if ($character->getId())
+                $map = $this->getRepository(LodestoneCharacterLodestoneClass::class)->findOneBy(['lodestone_character' => $character, 'lodestone_class' => $class]);
 
-                if (!$map) {
-                    $map = new LodestoneCharacterLodestoneClass();
-                    $map->setLodestoneCharacter($character);
-                    $map->setLodestoneClass($class);
-                }
-                $map->setLevel($classJob->Level);
-                $map->setExperience($classJob->ExpLevel);
-                $map->setExperienceTotal($classJob->ExpLevelMax);
-                $this->em->persist($map);
-
-                $character->addLodestoneClassMapping($map);
+            if (!$map) {
+                $map = new LodestoneCharacterLodestoneClass();
+                $map->setLodestoneCharacter($character);
+                $map->setLodestoneClass($class);
             }
+            $map->setLevel($classJob->Level);
+            $map->setExperience($classJob->ExpLevel);
+            $map->setExperienceTotal($classJob->ExpLevelMax);
+            $this->em->persist($map);
 
-            $gearset = $this->gearSetService->createOrUpdate($data->Character->GearSet, $character);
-            $character->addGearSet($gearset);
+            $character->addLodestoneClassMapping($map);
         }
-        elseif ($data->Info->Character->State == 1) {
-            $character->setXivapiAdded(1);
-        }
+
+        $gearset = $this->gearSetService->createOrUpdate($data->Character->GearSet, $character);
+        $character->addGearSet($gearset);
         $this->em->persist($character);
         $this->em->flush();
 

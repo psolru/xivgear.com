@@ -88,6 +88,10 @@ class GearSetService extends AbstractService
             $this->em->persist($item);
             $gearsetItem->setItem($item);
 
+            foreach ($gearsetItem->getMateria() as $materiaMap) {
+                $materiaMap->removeGearsetItem($gearsetItem);
+            }
+
             foreach($gear->Materia as $materia) {
                 $materiaItem = $this->itemService->getOrCreate(['lodestone_id' => $materia->ID])
                     ->setLodestoneId($materia->ID)

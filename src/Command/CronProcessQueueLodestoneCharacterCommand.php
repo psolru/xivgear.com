@@ -60,7 +60,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $queue = $this->lcRepository->getUpdateQueue(20);
+        $queue = $this->lcRepository->getUpdateQueue(10);
 
         if ($queue) {
 

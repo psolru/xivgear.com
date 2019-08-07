@@ -7,6 +7,7 @@ use App\Entity\GearSet;
 use App\Entity\LodestoneCharacter;
 use App\Entity\LodestoneClass;
 use App\Services\Lodestone\ItemService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use stdClass;
@@ -116,6 +117,8 @@ class GearSetService extends AbstractService
 
         // store Character Image
         file_put_contents($this->projectDir.'/public/data/gearset/'.$character->getLodestoneId().'_'.strtolower($gearSet->getLodestoneClass()->getShortEn()).'.jpg', file_get_contents($character->getPortraitUrl().'?='.time()));
+
+        $character->setUpdatedAt(new DateTime());
 
         $this->em->persist($gearSet);
         return $gearSet;

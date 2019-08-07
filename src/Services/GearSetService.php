@@ -89,7 +89,7 @@ class GearSetService extends AbstractService
             $gearsetItem->setItem($item);
 
             foreach ($gearsetItem->getMateria() as $materiaMap) {
-                $materiaMap->removeGearsetItem($gearsetItem);
+                $gearsetItem->removeMateria($materiaMap);
             }
 
             foreach($gear->Materia as $materia) {

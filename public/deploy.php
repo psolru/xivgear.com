@@ -30,7 +30,14 @@
 		$output .= "<span style=\"color: #6BE234;\">\$</span> <span style=\"color: #729FCF;\">{$command}\n</span>";
 		$output .= htmlentities(trim($tmp)) . "\n";
 	}
-	// Make it pretty for manual user access (and why not?)
+
+    // set deployment timestamp into config to refresh user cache for css/js/[…] files
+    $file = '../config/packages/twig.yaml';
+    $config = yaml_parse(file_get_contents($file));
+    $config['twig']['globals']['lastDeploy'] = time();
+    $config = yaml_emit($config);
+    file_put_contents($file, $config);
+
 ?>
 <!DOCTYPE HTML>
 <html lang="en-US">
@@ -40,11 +47,10 @@
 </head>
 <body style="background-color: #000000; color: #FFFFFF; font-weight: bold; padding: 0 10px;">
 <pre>
- ____________________________
-|                            |
-| Git Deployment Script v0.1 |
-|      github.com/riodw 2019 |
-|____________________________|
+ _______________________
+|                       |
+| Git Deployment Script |
+|_______________________|
 
 <?php echo $output; ?>
 </pre>

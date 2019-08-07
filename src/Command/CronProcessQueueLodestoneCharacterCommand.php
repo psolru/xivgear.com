@@ -60,7 +60,8 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $queue = $this->lcRepository->getUpdateQueue(5);
+        $charactersToUpdate = 5;
+        $queue = $this->lcRepository->getUpdateQueue($charactersToUpdate);
 
         if ($queue) {
 
@@ -72,10 +73,41 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
 
             $ids = implode(',', $ids);
 
-            $url = 'https://xivapi.com/characters?ids='.$ids.'&extended=1&private_key='.$_ENV['XIVAPI_KEY'];
-            $res = json_decode(file_get_contents($url));
+            $call = 0;
+            do {
+                $call++;
+                if ($call > 1) {
+                    sleep(10);
+                }
+                $url = 'https://xivapi.com/characters?ids='.$ids.'&extended=1&private_key='.$_ENV['XIVAPI_KEY'];
 
-            foreach ($res as $data)
+                $curl = curl_init();
+                curl_setopt_array($curl, [
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => $url,
+                    // endpoint takes like 4 seconds for each character
+                    CURLOPT_TIMEOUT => $charactersToUpdate*4,
+                ]);
+
+                $result = json_decode(curl_exec($curl));
+                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                if ($httpCode == 404) {
+                    if (preg_match("/Could not find: \/lodestone\/character\/([0-9]*)/", $result->Message, $m)) {
+                        $ids = str_replace($m[1], '', $ids);
+                        $ids = str_replace(',,', ',', $ids);
+                        $ids = trim($ids, ',');
+                        dump('deleting '.$m[1]);
+                    }
+                }
+            } while ($httpCode == 404 || $ids == '');
+
+            if ($httpCode != 200) {
+                dump('requestError');
+                exit;
+            }
+
+            foreach ($result as $data)
             {
                 foreach ($queue as $character)
                 {

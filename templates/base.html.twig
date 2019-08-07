@@ -44,12 +44,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
 
     {# Custom CSS #}
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}?t={{ lastDeploy }}">
 
     {# Custom JS #}
     <script src="{{ asset('js/ejs.min.js') }}"></script>
-    <script src="{{ asset('js/Fayt.js') }}"></script>
-    <script src="{{ asset('js/mainFayt.js') }}"></script>
+    <script src="{{ asset('js/Fayt.js') }}?t={{ lastDeploy }}"></script>
+    <script src="{{ asset('js/mainFayt.js') }}?t={{ lastDeploy }}"></script>
 </head>
 <body class="d-flex flex-column h-100">
 

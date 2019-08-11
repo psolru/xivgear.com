@@ -1,6 +1,9 @@
-### user data ###
+# user data
 /public/data/gearset/*
-###
+
+# vagrant
+/vm/.vagrant
+/vm/ubuntu-bionic-18.04-cloudimg-console.log
 
 ### phpstorm configs ###
 .idea

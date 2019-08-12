@@ -17,9 +17,9 @@
 		'git submodule sync',
 		'git submodule update',
 		'git submodule status',
-		'./bin/console doctrine:migrations:migrate',
+		'$(command -v php) bin/console doctrine:migrations:migrate',
 		'composer install',
-		'./bin/console cache:clear'
+		'$(command -v php) bin/console cache:clear'
 	);
 	// Run the commands for output
 	$output = '';

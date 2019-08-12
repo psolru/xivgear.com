@@ -39,6 +39,7 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
     public function getRecentlyAdded()
     {
         return $this->createQueryBuilder('lc')
+            ->andWhere('lc.updateFailed IS NULL')
             ->orderBy('lc.createdAt', 'DESC')
             ->setMaxResults(5)
             ->getQuery()
@@ -48,6 +49,7 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
     public function getRecentlyUpdated()
     {
         return $this->createQueryBuilder('lc')
+            ->andWhere('lc.updateFailed IS NULL')
             ->orderBy('lc.updatedAt', 'DESC')
             ->setMaxResults(5)
             ->getQuery()
@@ -65,8 +67,17 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
 
         return $qb->andWhere('lc.updatedAt <= :date')
             ->setParameter('date', new DateTime('- 6 hours'))
+            ->andWhere('lc.updateFailed IS NULL')
             ->orderBy('lc.updatedAt', 'ASC')
             ->setMaxResults($itemCount)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllExistingOnes()
+    {
+        $qb = $this->createQueryBuilder('lc');
+        return $qb->andWhere('lc.updateFailed IS NULL')
             ->getQuery()
             ->getResult();
     }

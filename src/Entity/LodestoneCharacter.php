@@ -60,6 +60,11 @@ class LodestoneCharacter
      */
     private $gearSets;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $updateFailed;
+
     public function __construct()
     {
         $this->lodestoneClassMappings = new ArrayCollection();
@@ -221,6 +226,18 @@ class LodestoneCharacter
                 $gearSet->setLodestoneCharacter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function hasUpdateFailed(): ?bool
+    {
+        return $this->updateFailed;
+    }
+
+    public function setUpdateFailed(?bool $updateFailed): self
+    {
+        $this->updateFailed = $updateFailed;
 
         return $this;
     }

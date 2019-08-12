@@ -103,4 +103,12 @@ class LodestoneCharacterService extends AbstractService
 
         return $character;
     }
+
+    public function setUpdateFailure(int $lodestone_id)
+    {
+        $character = $this->getRepository(LodestoneCharacter::class)->findOneBy(['lodestone_id' => $lodestone_id]);
+        $character->setUpdateFailed(true);
+        $this->em->persist($character);
+        $this->em->flush();
+    }
 }

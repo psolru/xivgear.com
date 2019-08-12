@@ -98,10 +98,15 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
                         $ids = str_replace(',,', ',', $ids);
                         $ids = trim($ids, ',');
                         dump('deleting '.$m[1]);
+                        $this->lcService->setUpdateFailure($m[1]);
                     }
                 }
-            } while ($httpCode == 404 || $ids == '');
+            } while ($httpCode == 404 && $ids != '');
 
+            if ($ids == '') {
+                dump('nothing left');
+                exit;
+            }
             if ($httpCode != 200) {
                 dump('requestError');
                 exit;

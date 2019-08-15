@@ -1,12 +1,16 @@
 <?php
-	/**
-	 * GIT DEPLOYMENT SCRIPT
-	 *
-	 * Used for automatically deploying websites via github or bitbucket, more deets here:
-	 * https://gist.github.com/riodw/71f6e2244534deae652962b32b7454e2
-	 * How To Use:
-	 * https://medium.com/riow/deploy-to-production-server-with-git-using-php-ab69b13f78ad
-	 */
+    /**
+     * GIT DEPLOYMENT SCRIPT
+     *
+     * Used for automatically deploying websites via github or bitbucket, more deets here:
+     * https://gist.github.com/riodw/71f6e2244534deae652962b32b7454e2
+     * How To Use:
+     * https://medium.com/riow/deploy-to-production-server-with-git-using-php-ab69b13f78ad
+     *
+     * Slightly changed by Patrick Scholz ;-)
+     * https://github.com/patrick-scholz
+     *
+     */
 	// The commands
 	$commands = array(
 		'echo $PWD',
@@ -17,9 +21,9 @@
 		'git submodule sync',
 		'git submodule update',
 		'git submodule status',
-		'$(command -v php) bin/console doctrine:migrations:migrate',
+		'php bin/console doctrine:migrations:migrate',
 		'composer install',
-		'$(command -v php) bin/console cache:clear'
+		'php bin/console cache:clear'
 	);
 	// Run the commands for output
 	$output = '';
@@ -31,7 +35,9 @@
 		$output .= htmlentities(trim($tmp)) . "\n";
 	}
 
-    // set deployment timestamp into config to refresh user cache for css/js/[…] files
+    /**
+     * Set deployment timestamp into twig config to refresh user cache for css/js/[…] files.
+     */
     $file = '../config/packages/twig.yaml';
     $config = yaml_parse(file_get_contents($file));
     $config['twig']['globals']['lastDeploy'] = time();

@@ -30,8 +30,8 @@ class LodestoneCharacterController extends AbstractController
      * @param Request $request
      * @return Response
      * @throws Exception
-     * @Route("/Character/{lodestone_id}", host="api.{domain}", name="api_lodestone_character")
-     * @Route("/character/{lodestone_id}", host="api.{domain}")
+     * @Route("/Character/{lodestone_id}", host="api.%base_host%}", name="api_lodestone_character")
+     * @Route("/character/{lodestone_id}", host="api.%base_host%")
      */
     public function api_index($lodestone_id, Request $request)
     {

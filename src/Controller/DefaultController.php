@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/", name="api_home", host="api.{domain}")
+     * @Route("/", name="api_home", host="api.%base_host%")
      * @return Response
      */
     public function api_index() {

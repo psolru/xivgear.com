@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\LodestoneCharacter;
 use App\Repository\LodestoneCharacterRepository;
-use App\Services\LodestoneCharacterService;
+use App\Services\Lodestone\CharacterService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,7 +21,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
 
     /** @var LodestoneCharacterRepository */
     private $lcRepository;
-    /** @var LodestoneCharacterService */
+    /** @var CharacterService */
     private $lcService;
     /** @var EntityManagerInterface */
     private $em;
@@ -29,12 +29,12 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
     /**
      * CronProcessQueueLodestoneCharacterCommand constructor.
      * @param LodestoneCharacterRepository $lcRepository
-     * @param LodestoneCharacterService $lcService
+     * @param CharacterService $lcService
      * @param EntityManagerInterface $em
      */
     public function __construct(
         LodestoneCharacterRepository $lcRepository,
-        LodestoneCharacterService $lcService,
+        CharacterService $lcService,
         EntityManagerInterface $em
     ) {
         $this->lcRepository = $lcRepository;

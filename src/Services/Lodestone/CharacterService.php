@@ -1,15 +1,16 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Services\Lodestone;
 
 use App\Entity\LodestoneCharacter;
 use App\Entity\LodestoneCharacterLodestoneClass;
 use App\Entity\LodestoneClass;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Lodestone\Api;
 
-class LodestoneCharacterService extends AbstractService
+class CharacterService extends AbstractService
 {
     /**
      * @var GearSetService
@@ -17,7 +18,7 @@ class LodestoneCharacterService extends AbstractService
     private $gearSetService;
 
     /**
-     * LodestoneCharacterService constructor.
+     * CharacterService constructor.
      * @param EntityManagerInterface $em
      * @param GearSetService $gearSetService
      */
@@ -66,16 +67,17 @@ class LodestoneCharacterService extends AbstractService
     public function update(LodestoneCharacter $character, $data=null)
     {
         if (!$data) {
-            $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
+            $api = new Api();
+            $data = $api->getCharacter($character->getLodestoneId());
         }
 
-        $character->setName($data->Character->Name);
-        $character->setServer($data->Character->Server);
-        $character->setAvatarUrl($data->Character->Avatar);
-        $character->setPortraitUrl($data->Character->Portrait);
+        $character->setName($data->Name);
+        $character->setServer($data->Server);
+        $character->setAvatarUrl($data->Avatar);
+        $character->setPortraitUrl($data->Portrait);
 
-        foreach ($data->Character->ClassJobs as $classJob) {
-            $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classJob->Job->ID]);
+        foreach ($data->ClassJobs as $classJob) {
+            $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classJob->JobID]);
             if (!$class)
                 continue;
 
@@ -96,7 +98,7 @@ class LodestoneCharacterService extends AbstractService
             $character->addLodestoneClassMapping($map);
         }
 
-        $gearset = $this->gearSetService->createOrUpdate($data->Character->GearSet, $character);
+        $gearset = $this->gearSetService->createOrUpdate($data, $character);
         $character->addGearSet($gearset);
         $this->em->persist($character);
         $this->em->flush();

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Services\LodestoneCharacterService;
+use App\Services\Lodestone\CharacterService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,15 +12,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class LodestoneCharacterController extends AbstractController
 {
     /**
-     * @var LodestoneCharacterService
+     * @var CharacterService
      */
     private $service;
 
     /**
      * LodestoneCharacterController constructor.
-     * @param LodestoneCharacterService $lodestoneCharacterService
+     * @param CharacterService $lodestoneCharacterService
      */
-    public function __construct(LodestoneCharacterService $lodestoneCharacterService)
+    public function __construct(CharacterService $lodestoneCharacterService)
     {
         $this->service = $lodestoneCharacterService;
     }

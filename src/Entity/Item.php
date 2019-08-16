@@ -21,7 +21,7 @@ class Item
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $lodestone_id;
 
@@ -86,12 +86,12 @@ class Item
         return $this->id;
     }
 
-    public function getLodestoneId(): ?int
+    public function getLodestoneId(): ?string
     {
         return $this->lodestone_id;
     }
 
-    public function setLodestoneId(int $lodestone_id): self
+    public function setLodestoneId(string $lodestone_id): self
     {
         $this->lodestone_id = $lodestone_id;
 

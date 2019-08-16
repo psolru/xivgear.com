@@ -29,13 +29,13 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
     /**
      * CronProcessQueueLodestoneCharacterCommand constructor.
      * @param LodestoneCharacterRepository $lcRepository
-     * @param CharacterService $lcService
      * @param EntityManagerInterface $em
+     * @param CharacterService $lcService
      */
     public function __construct(
         LodestoneCharacterRepository $lcRepository,
-        CharacterService $lcService,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        CharacterService $lcService
     ) {
         $this->lcRepository = $lcRepository;
         $this->lcService = $lcService;
@@ -60,7 +60,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $charactersToUpdate = 5;
+        $charactersToUpdate = 10;
         $queue = $this->lcRepository->getUpdateQueue($charactersToUpdate);
 
         if ($queue) {

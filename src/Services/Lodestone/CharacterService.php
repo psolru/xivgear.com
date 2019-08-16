@@ -6,6 +6,8 @@ namespace App\Services\Lodestone;
 use App\Entity\LodestoneCharacter;
 use App\Entity\LodestoneCharacterLodestoneClass;
 use App\Entity\LodestoneClass;
+use App\Services\AbstractService;
+use App\Services\GearSetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Lodestone\Api;

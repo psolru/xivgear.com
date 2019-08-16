@@ -30,17 +30,18 @@ sudo apt-get install mysql-server -y
 #
 # PHP
 #
-echo "Installing: PHP 7.2"
+echo "Installing: PHP 7.3"
 sudo apt-get install -y \
-    php7.2 \
-    php7.2-mysql \
-    php7.2-dom \
-    php7.2-curl \
-    php7.2-mbstring \
-    php7.2-zip \
+    php7.3 \
+    php7.3-mysql \
+    php7.3-dom \
+    php7.3-curl \
+    php7.3-mbstring \
+    php7.3-zip \
+    php7.3-yaml \
     libapache2-mod-php
 
-sudo sed -i 's|display_errors = Off|display_errors = On|' /etc/php/7.2/apache2/php.ini
+sudo sed -i 's|display_errors = Off|display_errors = On|' /etc/php/7.3/apache2/php.ini
 
 #
 # Composer
@@ -50,12 +51,6 @@ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php composer-setup.php
 php -r "unlink('composer-setup.php');"
 mv composer.phar /usr/local/bin/composer
-
-#
-# Permissions
-#
-echo "Setting up permissions and symlink"
-sudo ln -s /vagrant/ /var/www/xivgear.local
 
 #
 # Adminer
@@ -68,6 +63,7 @@ wget https://www.adminer.org/latest-mysql.php -O /var/www/xivgear.adminer/index.
 # Finishing
 #
 echo "Finishing up…"
+sudo ln -s /vagrant/ /var/www/xivgear.local
 sudo service apache2 restart
 sudo apt-get autoremove -y
 sudo apt-get update -y

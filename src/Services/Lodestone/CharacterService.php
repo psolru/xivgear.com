@@ -3,14 +3,12 @@
 
 namespace App\Services\Lodestone;
 
-use App\Entity\LodestoneCharacter;
-use App\Entity\LodestoneCharacterLodestoneClass;
-use App\Entity\LodestoneClass;
+use App\Entity\Lodestone\Character;
+use App\Entity\Lodestone\CharacterLodestoneClass;
+use App\Entity\Lodestone\LodestoneClass;
 use App\Services\AbstractService;
-use App\Services\GearSetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Lodestone\Api;
 
 class CharacterService extends AbstractService
 {
@@ -32,12 +30,12 @@ class CharacterService extends AbstractService
 
     /**
      * @param $lodestone_id
-     * @return LodestoneCharacter
+     * @return Character
      * @throws Exception
      */
-    public function get($lodestone_id): LodestoneCharacter
+    public function get($lodestone_id): Character
     {
-        $character = $this->getRepository(LodestoneCharacter::class)->findOneBy(['lodestone_id' => $lodestone_id]);
+        $character = $this->getRepository(Character::class)->findOneBy(['lodestone_id' => $lodestone_id]);
         if (!$character) {
             $character = $this->create($lodestone_id);
         }
@@ -46,12 +44,12 @@ class CharacterService extends AbstractService
 
     /**
      * @param $lodestone_id
-     * @return LodestoneCharacter
+     * @return Character
      * @throws Exception
      */
-    public function create($lodestone_id): LodestoneCharacter
+    public function create($lodestone_id): Character
     {
-        $character = new LodestoneCharacter();
+        $character = new Character();
         $character->setLodestoneId($lodestone_id);
         $character->setJustCreated(true);
 
@@ -61,12 +59,12 @@ class CharacterService extends AbstractService
     }
 
     /**
-     * @param LodestoneCharacter $character
+     * @param Character $character
      * @param null $data
-     * @return LodestoneCharacter
+     * @return Character
      * @throws Exception
      */
-    public function update(LodestoneCharacter $character, $data=null)
+    public function update(Character $character, $data=null)
     {
         if (!$data) {
             $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
@@ -84,10 +82,14 @@ class CharacterService extends AbstractService
 
             $map = null;
             if ($character->getId())
-                $map = $this->getRepository(LodestoneCharacterLodestoneClass::class)->findOneBy(['lodestone_character' => $character, 'lodestone_class' => $class]);
+                $map = $this->getRepository(CharacterLodestoneClass::class)
+                    ->findOneBy([
+                        'lodestone_character' => $character,
+                        'lodestone_class' => $class
+                    ]);
 
             if (!$map) {
-                $map = new LodestoneCharacterLodestoneClass();
+                $map = new CharacterLodestoneClass();
                 $map->setLodestoneCharacter($character);
                 $map->setLodestoneClass($class);
             }
@@ -109,7 +111,7 @@ class CharacterService extends AbstractService
 
     public function setUpdateFailure(int $lodestone_id)
     {
-        $character = $this->getRepository(LodestoneCharacter::class)->findOneBy(['lodestone_id' => $lodestone_id]);
+        $character = $this->getRepository(Character::class)->findOneBy(['lodestone_id' => $lodestone_id]);
         $character->setUpdateFailed(true);
         $this->em->persist($character);
         $this->em->flush();

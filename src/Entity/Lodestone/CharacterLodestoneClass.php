@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Lodestone;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LodestoneCharacterLodestoneClassRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Lodestone\CharacterLodestoneClassRepository")
+ * @ORM\Table(name="lodestone_character_lodestone_class")
  */
-class LodestoneCharacterLodestoneClass
+class CharacterLodestoneClass
 {
     /**
      * @ORM\Id()
@@ -34,13 +33,13 @@ class LodestoneCharacterLodestoneClass
     private $experience_total;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LodestoneCharacter", inversedBy="lodestoneClassMappings")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lodestone\Character", inversedBy="lodestoneClassMappings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lodestone_character;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LodestoneClass", inversedBy="lodestoneCharacterMappings")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lodestone\LodestoneClass", inversedBy="lodestoneCharacterMappings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lodestone_class;
@@ -91,12 +90,12 @@ class LodestoneCharacterLodestoneClass
         return $this;
     }
 
-    public function getLodestoneCharacter(): ?LodestoneCharacter
+    public function getLodestoneCharacter(): ?Character
     {
         return $this->lodestone_character;
     }
 
-    public function setLodestoneCharacter(?LodestoneCharacter $lodestone_character): self
+    public function setLodestoneCharacter(?Character $lodestone_character): self
     {
         $this->lodestone_character = $lodestone_character;
 

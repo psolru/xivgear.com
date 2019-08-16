@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Lodestone\Character;
+use App\Entity\Lodestone\LodestoneClass;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,13 +23,13 @@ class GearSet
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LodestoneCharacter", inversedBy="gearSets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lodestone\Character", inversedBy="gearSets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lodestone_character;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LodestoneClass", inversedBy="gearSets")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lodestone\LodestoneClass", inversedBy="gearSets")
      * @ORM\JoinColumn(nullable=false)
      */
     private $lodestone_class;
@@ -182,12 +184,12 @@ class GearSet
         return $this->id;
     }
 
-    public function getLodestoneCharacter(): ?LodestoneCharacter
+    public function getLodestoneCharacter(): ?Character
     {
         return $this->lodestone_character;
     }
 
-    public function setLodestoneCharacter(?LodestoneCharacter $lodestone_character): self
+    public function setLodestoneCharacter(?Character $lodestone_character): self
     {
         $this->lodestone_character = $lodestone_character;
 

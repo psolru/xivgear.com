@@ -2,8 +2,8 @@
 
 namespace App\Command;
 
-use App\Entity\LodestoneCharacter;
-use App\Repository\LodestoneCharacterRepository;
+use App\Entity\Lodestone\Character;
+use App\Repository\Lodestone\CharacterRepository;
 use App\Services\Lodestone\CharacterService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +19,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
 {
     protected static $defaultName = 'cron:process:queue:lodestone-character';
 
-    /** @var LodestoneCharacterRepository */
+    /** @var CharacterRepository */
     private $lcRepository;
     /** @var CharacterService */
     private $lcService;
@@ -28,12 +28,12 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
 
     /**
      * CronProcessQueueLodestoneCharacterCommand constructor.
-     * @param LodestoneCharacterRepository $lcRepository
+     * @param CharacterRepository $lcRepository
      * @param EntityManagerInterface $em
      * @param CharacterService $lcService
      */
     public function __construct(
-        LodestoneCharacterRepository $lcRepository,
+        CharacterRepository $lcRepository,
         EntityManagerInterface $em,
         CharacterService $lcService
     ) {
@@ -66,7 +66,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
         if ($queue) {
 
             $ids = [];
-            /** @var $character LodestoneCharacter */
+            /** @var $character Character */
             foreach ($queue as $character) {
                 $ids[] = $character->getLodestoneId();
             }
@@ -125,7 +125,7 @@ class CronProcessQueueLodestoneCharacterCommand extends Command
                     $this->lcService->update($character, $data);
                 }
                 catch (Exception $err) {
-                    echo $err->getMessage()."\n";
+                    echo $err->getMessage().' in '.$err->getFile().':'.$err->getLine()."\n".$err->getTraceAsString()."\n";
                 }
                 $character->setUpdatedAt(new DateTime());
                 $this->em->persist($character);

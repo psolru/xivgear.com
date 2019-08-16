@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Lodestone;
 
+use App\Entity\GearSet;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LodestoneCharacterRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Lodestone\CharacterRepository")
+ * @ORM\Table(name="lodestone_character")
  */
-class LodestoneCharacter
+class Character
 {
     use TimestampableEntity;
     /**
@@ -51,7 +53,7 @@ class LodestoneCharacter
     private $portraitUrl;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LodestoneCharacterLodestoneClass", mappedBy="lodestone_character")
+     * @ORM\OneToMany(targetEntity="App\Entity\Lodestone\CharacterLodestoneClass", mappedBy="lodestone_character")
      */
     private $lodestoneClassMappings;
 
@@ -147,7 +149,7 @@ class LodestoneCharacter
     }
 
     /**
-     * @return Collection|LodestoneCharacterLodestoneClass[]
+     * @return Collection|CharacterLodestoneClass[]
      */
     public function getLodestoneClassMappings(): Collection
     {
@@ -156,9 +158,9 @@ class LodestoneCharacter
 
     /**
      * @param string $short
-     * @return LodestoneCharacterLodestoneClass|null
+     * @return CharacterLodestoneClass|null
      */
-    public function getLodestoneClassMapping(string $short): ?LodestoneCharacterLodestoneClass
+    public function getLodestoneClassMapping(string $short): ?CharacterLodestoneClass
     {
         foreach ($this->getLodestoneClassMappings() as $map) {
             if ($map->getShort() == $short) {
@@ -169,10 +171,10 @@ class LodestoneCharacter
     }
 
     /**
-     * @param LodestoneCharacterLodestoneClass $lodestoneClassMapping
-     * @return LodestoneCharacter
+     * @param CharacterLodestoneClass $lodestoneClassMapping
+     * @return Character
      */
-    public function addLodestoneClassMapping(LodestoneCharacterLodestoneClass $lodestoneClassMapping): self
+    public function addLodestoneClassMapping(CharacterLodestoneClass $lodestoneClassMapping): self
     {
         if (!$this->lodestoneClassMappings->contains($lodestoneClassMapping)) {
             $this->lodestoneClassMappings[] = $lodestoneClassMapping;
@@ -183,10 +185,10 @@ class LodestoneCharacter
     }
 
     /**
-     * @param LodestoneCharacterLodestoneClass $lodestoneClassMapping
-     * @return LodestoneCharacter
+     * @param CharacterLodestoneClass $lodestoneClassMapping
+     * @return Character
      */
-    public function removeLodestoneClassMapping(LodestoneCharacterLodestoneClass $lodestoneClassMapping): self
+    public function removeLodestoneClassMapping(CharacterLodestoneClass $lodestoneClassMapping): self
     {
         if ($this->lodestoneClassMappings->contains($lodestoneClassMapping)) {
             $this->lodestoneClassMappings->removeElement($lodestoneClassMapping);

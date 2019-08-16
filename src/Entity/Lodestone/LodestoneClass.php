@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Lodestone;
 
+use App\Entity\GearSet;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LodestoneClassRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Lodestone\LodestoneClassRepository")
  */
 class LodestoneClass
 {
@@ -94,7 +95,7 @@ class LodestoneClass
     private $gatherer;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LodestoneCharacterLodestoneClass", mappedBy="lodestone_class")
+     * @ORM\OneToMany(targetEntity="App\Entity\Lodestone\CharacterLodestoneClass", mappedBy="lodestone_class")
      */
     private $lodestoneCharacterMappings;
 
@@ -290,14 +291,14 @@ class LodestoneClass
     }
 
     /**
-     * @return Collection|LodestoneCharacterLodestoneClass[]
+     * @return Collection|CharacterLodestoneClass[]
      */
     public function getLodestoneCharacterMappings(): Collection
     {
         return $this->lodestoneCharacterMappings;
     }
 
-    public function addLodestoneCharacterMapping(LodestoneCharacterLodestoneClass $lodestoneCharacterMapping): self
+    public function addLodestoneCharacterMapping(CharacterLodestoneClass $lodestoneCharacterMapping): self
     {
         if (!$this->lodestoneCharacterMappings->contains($lodestoneCharacterMapping)) {
             $this->lodestoneCharacterMappings[] = $lodestoneCharacterMapping;
@@ -307,7 +308,7 @@ class LodestoneClass
         return $this;
     }
 
-    public function removeLodestoneCharacterMapping(LodestoneCharacterLodestoneClass $lodestoneCharacterMapping): self
+    public function removeLodestoneCharacterMapping(CharacterLodestoneClass $lodestoneCharacterMapping): self
     {
         if ($this->lodestoneCharacterMappings->contains($lodestoneCharacterMapping)) {
             $this->lodestoneCharacterMappings->removeElement($lodestoneCharacterMapping);

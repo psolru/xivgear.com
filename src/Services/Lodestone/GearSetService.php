@@ -1,12 +1,13 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Services\Lodestone;
 
 use App\Entity\GearSet;
-use App\Entity\LodestoneCharacter;
-use App\Entity\LodestoneClass;
-use App\Services\Lodestone\ItemService;
+use App\Entity\Lodestone\Character;
+use App\Entity\Lodestone\LodestoneClass;
+use App\Services\AbstractService;
+use App\Services\GearsetItemService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -44,11 +45,11 @@ class GearSetService extends AbstractService
 
     /**
      * @param stdClass $gearsetData
-     * @param LodestoneCharacter $character
+     * @param Character $character
      * @return GearSet
      * @throws Exception
      */
-    public function createOrUpdate(stdClass $gearsetData, LodestoneCharacter $character): GearSet
+    public function createOrUpdate(stdClass $gearsetData, Character $character): GearSet
     {
         $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $gearsetData->Job->ID]);
         if (!$class)

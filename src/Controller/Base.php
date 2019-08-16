@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Repository\GearSetRepository;
-use App\Repository\LodestoneCharacterRepository;
+use App\Repository\Lodestone\CharacterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends AbstractController
+class Base extends AbstractController
 {
     /**
      * @Route("/", name="api_home", host="api.%base_host%")
@@ -20,18 +20,18 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/", name="home")
-     * @param LodestoneCharacterRepository $lodestoneCharacterRepository
+     * @param CharacterRepository $lodestoneCharacterRepository
      * @param GearSetRepository $gearSetRepository
      * @return Response
      */
     public function index(
-        LodestoneCharacterRepository $lodestoneCharacterRepository,
+        CharacterRepository $lodestoneCharacterRepository,
         GearSetRepository $gearSetRepository
     ) {
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
-            'recentlyAdded' => $lodestoneCharacterRepository->getRecentlyAdded(),
-            'recentlyUpdated' => $lodestoneCharacterRepository->getRecentlyUpdated(),
+            'recentlyAdded' => $lodestoneCharacterRepository->getRecentlyAdded(10),
+            'recentlyUpdated' => $lodestoneCharacterRepository->getRecentlyUpdated(10),
             'characterCount' => count($lodestoneCharacterRepository->findAllExistingOnes()),
             'gearSetCount' => count($gearSetRepository->findAll())
         ]);
@@ -39,10 +39,10 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/sitemap.xml", name="sitemap.xml.twig")
-     * @param LodestoneCharacterRepository $lodestoneCharacterRepository
+     * @param CharacterRepository $lodestoneCharacterRepository
      * @return Response
      */
-    public function sitemap(LodestoneCharacterRepository $lodestoneCharacterRepository)
+    public function sitemap(CharacterRepository $lodestoneCharacterRepository)
     {
         $response = $this->render('default/sitemap.xml.twig', [
             'characterList' => $lodestoneCharacterRepository->findAllExistingOnes()

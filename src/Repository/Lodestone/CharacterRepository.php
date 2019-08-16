@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Lodestone;
 
-use App\Entity\LodestoneCharacter;
+use App\Entity\Lodestone\Character;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -10,16 +10,16 @@ use Exception;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method LodestoneCharacter|null find($id, $lockMode = null, $lockVersion = null)
- * @method LodestoneCharacter|null findOneBy(array $criteria, array $orderBy = null)
- * @method LodestoneCharacter[]    findAll()
- * @method LodestoneCharacter[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Character|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Character|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Character[]    findAll()
+ * @method Character[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LodestoneCharacterRepository extends ServiceEntityRepository
+class CharacterRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, LodestoneCharacter::class);
+        parent::__construct($registry, Character::class);
     }
 
     /**
@@ -83,7 +83,7 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return LodestoneCharacter[] Returns an array of LodestoneCharacter objects
+    //  * @return Character[] Returns an array of Character objects
     //  */
     /*
     public function findByExampleField($value)
@@ -100,7 +100,7 @@ class LodestoneCharacterRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?LodestoneCharacter
+    public function findOneBySomeField($value): ?Character
     {
         return $this->createQueryBuilder('l')
             ->andWhere('l.exampleField = :val')

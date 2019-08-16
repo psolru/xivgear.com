@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Lodestone;
 
 use App\Services\Lodestone\CharacterService;
 use Exception;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LodestoneCharacterController extends AbstractController
+class Character extends AbstractController
 {
     /**
      * @var CharacterService
@@ -17,7 +17,7 @@ class LodestoneCharacterController extends AbstractController
     private $service;
 
     /**
-     * LodestoneCharacterController constructor.
+     * Character constructor.
      * @param CharacterService $lodestoneCharacterService
      */
     public function __construct(CharacterService $lodestoneCharacterService)
@@ -128,7 +128,7 @@ class LodestoneCharacterController extends AbstractController
         }
 
        return $this->render('lodestone_character/index.html.twig', [
-            'controller_name' => 'LodestoneCharacterController',
+            'controller_name' => 'Character',
             'character' => $character,
             'showCreationHint' => strtotime('+10 seconds', $character->getUpdatedAt()->getTimestamp()) >= strtotime('now') ? true : false
         ]);

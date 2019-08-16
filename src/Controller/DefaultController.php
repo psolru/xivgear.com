@@ -36,4 +36,18 @@ class DefaultController extends AbstractController
             'gearSetCount' => count($gearSetRepository->findAll())
         ]);
     }
+
+    /**
+     * @Route("/sitemap.xml", name="sitemap.xml.twig")
+     * @param LodestoneCharacterRepository $lodestoneCharacterRepository
+     * @return Response
+     */
+    public function sitemap(LodestoneCharacterRepository $lodestoneCharacterRepository)
+    {
+        $response = $this->render('default/sitemap.xml.twig', [
+            'characterList' => $lodestoneCharacterRepository->findAllExistingOnes()
+        ]);
+        $response->headers->set('Content-Type', 'text/xml');
+        return $response;
+    }
 }

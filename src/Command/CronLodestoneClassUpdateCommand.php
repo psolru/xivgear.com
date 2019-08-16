@@ -45,15 +45,16 @@ class CronLodestoneClassUpdateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         for ($i=0;$i<=38;$i++) {
+
             $item = json_decode(file_get_contents('https://xivapi.com/ClassJob/'.$i.'?private_key='.$_ENV['XIVAPI_KEY']));
 
             echo $item->Abbreviation_en."\n";
 
-            $ffxivClass = $this->lodestoneClassRepository->findOneBy(['lodestone_id' => $item->ID]);
-            if (!$ffxivClass)
-                $ffxivClass = new LodestoneClass();
+            $lodestoneClass = $this->lodestoneClassRepository->findOneBy(['lodestone_id' => $item->ID]);
+            if (!$lodestoneClass)
+                $lodestoneClass = new LodestoneClass();
 
-            $ffxivClass
+            $lodestoneClass
                 ->setLodestoneId($item->ID)
                 ->setIconUrl($item->Icon)
                 ->setNameDe($item->Name_de)
@@ -67,9 +68,9 @@ class CronLodestoneClassUpdateCommand extends Command
             ;
 
             if (isset($item->ClassJobParent->ID))
-                $ffxivClass->setParentLodestoneId($item->ClassJobParent->ID);
+                $lodestoneClass->setParentLodestoneId($item->ClassJobParent->ID);
 
-            $this->em->persist($ffxivClass);
+            $this->em->persist($lodestoneClass);
             sleep(1);
         }
         $this->em->flush();

@@ -72,13 +72,13 @@ class CharacterService extends AbstractService
             $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
         }
 
-        $character->setName($data->Name);
-        $character->setServer($data->Server);
-        $character->setAvatarUrl($data->Avatar);
-        $character->setPortraitUrl($data->Portrait);
+        $character->setName($data->Character->Name);
+        $character->setServer($data->Character->Server);
+        $character->setAvatarUrl($data->Character->Avatar);
+        $character->setPortraitUrl($data->Character->Portrait);
 
-        foreach ($data->ClassJobs as $classJob) {
-            $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classJob->JobID]);
+        foreach ($data->Character->ClassJobs as $classJob) {
+            $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classJob->Job->ID]);
             if (!$class)
                 continue;
 
@@ -99,7 +99,7 @@ class CharacterService extends AbstractService
             $character->addLodestoneClassMapping($map);
         }
 
-        $gearset = $this->gearSetService->createOrUpdate($data, $character);
+        $gearset = $this->gearSetService->createOrUpdate($data->Character->GearSet, $character);
         $character->addGearSet($gearset);
         $this->em->persist($character);
         $this->em->flush();

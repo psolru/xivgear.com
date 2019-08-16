@@ -69,8 +69,7 @@ class CharacterService extends AbstractService
     public function update(LodestoneCharacter $character, $data=null)
     {
         if (!$data) {
-            $api = new Api();
-            $data = $api->getCharacter($character->getLodestoneId());
+            $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
         }
 
         $character->setName($data->Name);

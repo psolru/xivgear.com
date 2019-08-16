@@ -32,8 +32,8 @@
         "symfony/validator": "4.3.*",
         "symfony/web-link": "4.3.*",
         "symfony/yaml": "4.3.*",
-        "xivapi/xivapi-php": "^1.6",
-        "xivapi/lodestone-parser": "^1.8"
+        "xivapi/lodestone-parser": "^1.8",
+        "xivapi/xivapi-php": "^1.6"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.1",

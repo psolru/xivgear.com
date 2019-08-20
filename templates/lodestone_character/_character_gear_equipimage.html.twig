@@ -91,7 +91,7 @@
                                 setTimeout(function() {
                                     $.post('https://xivapi.com/item/{{ materia.lodestoneId }}?columns=Materia.BaseParam.Name,Materia.Value', function(res, ok) {
                                         if (ok == 'success') {
-                                            $('#{{ uiDetails }}-mat{$key|num}-stats').html('- <strong>'+res.Materia.BaseParam.Name+'</strong> +'+res.Materia.Value)
+                                            $('#{{ uiDetails }}-mat{{ loop.index0 }}-stats').html('- <strong>'+res.Materia.BaseParam.Name+'</strong> +'+res.Materia.Value)
                                         }
                                     })
                                 }, 200)

@@ -67,6 +67,11 @@ class Character
      */
     private $updateFailed;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $autoAdded;
+
     public function __construct()
     {
         $this->lodestoneClassMappings = new ArrayCollection();
@@ -240,6 +245,18 @@ class Character
     public function setUpdateFailed(?bool $updateFailed): self
     {
         $this->updateFailed = $updateFailed;
+
+        return $this;
+    }
+
+    public function getAutoAdded(): ?bool
+    {
+        return $this->autoAdded;
+    }
+
+    public function setAutoAdded(?bool $autoAdded): self
+    {
+        $this->autoAdded = $autoAdded;
 
         return $this;
     }

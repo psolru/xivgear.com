@@ -21,9 +21,9 @@
 		'git submodule sync',
 		'git submodule update',
 		'git submodule status',
-		'php bin/console doctrine:migrations:migrate',
+		'php ../bin/console doctrine:migrations:migrate',
 		'composer install',
-		'php bin/console cache:clear'
+		'php ../bin/console cache:clear'
 	);
 	// Run the commands for output
 	$output = '';

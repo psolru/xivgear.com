@@ -8,6 +8,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-yaml": "*",
+        "beberlei/doctrineextensions": "^1.2",
         "cron/cron-bundle": "^2.1",
         "sensio/framework-extra-bundle": "^5.1",
         "stof/doctrine-extensions-bundle": "^1.3",

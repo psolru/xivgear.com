@@ -51,11 +51,11 @@ class GearSetService extends AbstractService
      */
     public function createOrUpdate(stdClass $gearsetData, Character $character): GearSet
     {
-        $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $gearsetData->Job->ID]);
+        $class = $this->em->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $gearsetData->Job->ID]);
         if (!$class)
             throw new Exception("Class not found. Maybe there was a Patch? owo");
 
-        $gearSet = $this->getRepository(GearSet::class)->findOneBy(['lodestone_character' => $character, 'lodestone_class' => $class]);
+        $gearSet = $this->em->getRepository(GearSet::class)->findOneBy(['lodestone_character' => $character, 'lodestone_class' => $class]);
         if (!$gearSet) {
             $gearSet = new GearSet();
             $gearSet->setLodestoneClass($class);

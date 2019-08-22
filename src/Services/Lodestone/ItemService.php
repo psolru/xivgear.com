@@ -14,7 +14,7 @@ class ItemService extends AbstractService
      */
     public function getOrCreate(array $criteria): Item
     {
-        $gearsetItem = $this->getRepository(Item::class)->findOneBy($criteria);
+        $gearsetItem = $this->em->getRepository(Item::class)->findOneBy($criteria);
         if ($gearsetItem)
             return $gearsetItem;
         return new Item();

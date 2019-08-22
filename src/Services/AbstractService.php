@@ -22,18 +22,4 @@ class AbstractService
     {
         $this->em = $em;
     }
-
-    public function getXivapiWrapper()
-    {
-        return new XIVAPI();
-    }
-
-    /**
-     * @param $class
-     * @return ObjectRepository
-     */
-    public function getRepository($class)
-    {
-        return $this->em->getRepository($class);
-    }
 }

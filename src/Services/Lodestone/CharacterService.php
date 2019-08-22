@@ -9,6 +9,7 @@ use App\Entity\Lodestone\LodestoneClass;
 use App\Services\AbstractService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use XIVAPI\XIVAPI;
 
 class CharacterService extends AbstractService
 {
@@ -35,7 +36,7 @@ class CharacterService extends AbstractService
      */
     public function get($lodestone_id): Character
     {
-        $character = $this->getRepository(Character::class)->findOneBy(['lodestone_id' => $lodestone_id]);
+        $character = $this->em->getRepository(Character::class)->findOneBy(['lodestone_id' => $lodestone_id]);
         if (!$character) {
             $character = $this->create($lodestone_id);
         }
@@ -67,7 +68,7 @@ class CharacterService extends AbstractService
     public function update(Character $character, $data=null)
     {
         if (!$data) {
-            $data = $this->getXivapiWrapper()->character->get($character->getLodestoneId(), [], true);
+            $data = (new XIVAPI())->character->get($character->getLodestoneId(), [], true);
         }
 
         $character->setName($data->Character->Name);
@@ -76,13 +77,13 @@ class CharacterService extends AbstractService
         $character->setPortraitUrl($data->Character->Portrait);
 
         foreach ($data->Character->ClassJobs as $classJob) {
-            $class = $this->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classJob->Job->ID]);
+            $class = $this->em->getRepository(LodestoneClass::class)->findOneBy(['lodestone_id' => $classJob->Job->ID]);
             if (!$class)
                 continue;
 
             $map = null;
             if ($character->getId())
-                $map = $this->getRepository(CharacterLodestoneClass::class)
+                $map = $this->em->getRepository(CharacterLodestoneClass::class)
                     ->findOneBy([
                         'lodestone_character' => $character,
                         'lodestone_class' => $class
@@ -111,7 +112,7 @@ class CharacterService extends AbstractService
 
     public function setUpdateFailure(int $lodestone_id)
     {
-        $character = $this->getRepository(Character::class)->findOneBy(['lodestone_id' => $lodestone_id]);
+        $character = $this->em->getRepository(Character::class)->findOneBy(['lodestone_id' => $lodestone_id]);
         $character->setUpdateFailed(true);
         $this->em->persist($character);
         $this->em->flush();

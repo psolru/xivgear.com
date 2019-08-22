@@ -13,7 +13,7 @@ class GearsetItemService extends AbstractService
      */
     public function getOrCreate(array $criteria): GearsetItem
     {
-        $gearsetItem = $this->getRepository(GearsetItem::class)->findOneBy($criteria);
+        $gearsetItem = $this->em->getRepository(GearsetItem::class)->findOneBy($criteria);
         if ($gearsetItem)
             return $gearsetItem;
         return new GearsetItem();

@@ -22,24 +22,9 @@ class CharacterRepository extends ServiceEntityRepository
         parent::__construct($registry, Character::class);
     }
 
-    /**
-     * @param $lodestone_id
-     * @return mixed
-     * @throws NonUniqueResultException
-     */
-    public function findOneByLodestoneId($lodestone_id)
-    {
-        return $this->createQueryBuilder('lc')
-            ->andWhere('lc.lodestone_id = :id')
-            ->setParameter('id', $lodestone_id)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
     public function getRecentlyAdded()
     {
-        return $this->createQueryBuilder('lc')
-            ->andWhere('lc.updateFailed IS NULL')
+        return $this->defaultQueryBuilder()
             ->orderBy('lc.createdAt', 'DESC')
             ->setMaxResults(5)
             ->getQuery()
@@ -48,8 +33,7 @@ class CharacterRepository extends ServiceEntityRepository
 
     public function getRecentlyUpdated()
     {
-        return $this->createQueryBuilder('lc')
-            ->andWhere('lc.updateFailed IS NULL')
+        return $this->defaultQueryBuilder()
             ->orderBy('lc.updatedAt', 'DESC')
             ->setMaxResults(5)
             ->getQuery()
@@ -63,11 +47,9 @@ class CharacterRepository extends ServiceEntityRepository
      */
     public function getUpdateQueue(int $itemCount)
     {
-        $qb = $this->createQueryBuilder('lc');
-
-        return $qb->andWhere('lc.updatedAt <= :date')
+        return $this->defaultQueryBuilder()
+            ->andWhere('lc.updatedAt <= :date')
             ->setParameter('date', new DateTime('- 6 hours'))
-            ->andWhere('lc.updateFailed IS NULL')
             ->orderBy('lc.updatedAt', 'ASC')
             ->setMaxResults($itemCount)
             ->getQuery()
@@ -76,38 +58,27 @@ class CharacterRepository extends ServiceEntityRepository
 
     public function findAllExistingOnes()
     {
-        $qb = $this->createQueryBuilder('lc');
-        return $qb->andWhere('lc.updateFailed IS NULL')
+        return $this->defaultQueryBuilder()
             ->getQuery()
             ->getResult();
     }
 
-    // /**
-    //  * @return Character[] Returns an array of Character objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getCreationByHourMetric()
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
+        $res = $this->defaultQueryBuilder()
+            ->addSelect('COUNT(lc) as creations')
+            ->addSelect('HOUR(createdAt) as hour')
+            ->addGroupBy('hour')
+            ->addOrderBy('hour')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+        dump($res);
+        die;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Character
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+    private function defaultQueryBuilder() {
+        return $this->createQueryBuilder('lc')
+            ->andWhere('lc.updateFailed IS NULL');
     }
-    */
+
 }

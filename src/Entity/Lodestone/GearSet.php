@@ -67,7 +67,7 @@ class GearSet
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $criticalHit;
+    private $criticalHitRate;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -216,18 +216,6 @@ class GearSet
     public function setILevel(int $iLevel): self
     {
         $this->iLevel = $iLevel;
-
-        return $this;
-    }
-
-    public function getStrength(): ?int
-    {
-        return $this->strength;
-    }
-
-    public function setStrength(?int $strength): self
-    {
-        $this->strength = $strength;
 
         return $this;
     }

@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Command;
+namespace App\Command\Import\Lodestone;
 
 use App\Entity\Lodestone\LodestoneClass;
 use App\Repository\Lodestone\LodestoneClassRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-class CronLodestoneClassUpdateCommand extends Command
+class Classes extends Command
 {
-    protected static $defaultName = 'cron:lodestone_class:update';
+    protected static $defaultName = 'import:lodestone:classes';
     /**
      * @var LodestoneClassRepository
      */
@@ -23,7 +21,7 @@ class CronLodestoneClassUpdateCommand extends Command
     private $em;
 
     /**
-     * CronLodestoneClassUpdateCommand constructor.
+     * Classes constructor.
      * @param LodestoneClassRepository $lodestoneClassRepository
      * @param EntityManagerInterface $em
      */
@@ -44,11 +42,16 @@ class CronLodestoneClassUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $progressBar = new ProgressBar($output, 39);
+        $progressBar->setFormat("%message%\n%current%/%max% [%bar%] %percent:3s%% %memory:6s%\n");
+        $progressBar->setMessage('Starting…');
+
+        $progressBar->start();
         for ($i=0;$i<=38;$i++) {
 
             $item = json_decode(file_get_contents('https://xivapi.com/ClassJob/'.$i.'?private_key='.$_ENV['XIVAPI_KEY']));
 
-            echo $item->Abbreviation_en."\n";
+            $progressBar->setMessage('Importing '.$item->Name_en);
 
             $lodestoneClass = $this->lodestoneClassRepository->findOneBy(['lodestone_id' => $item->ID]);
             if (!$lodestoneClass)
@@ -71,8 +74,10 @@ class CronLodestoneClassUpdateCommand extends Command
                 $lodestoneClass->setParentLodestoneId($item->ClassJobParent->ID);
 
             $this->em->persist($lodestoneClass);
-            sleep(1);
+            $this->em->flush();
+
+            $progressBar->advance();
         }
-        $this->em->flush();
+        $progressBar->finish();
     }
 }

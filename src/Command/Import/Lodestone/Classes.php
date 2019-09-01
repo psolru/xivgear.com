@@ -48,11 +48,7 @@ class Classes extends Command
 
         $progressBar->start();
         for ($i=0;$i<=38;$i++) {
-            $progressBar->advance();
-
             $item = json_decode(file_get_contents('https://xivapi.com/ClassJob/'.$i.'?private_key='.$_ENV['XIVAPI_KEY']));
-
-            $progressBar->setMessage('Importing '.$item->Name_en);
 
             $lodestoneClass = $this->lodestoneClassRepository->findOneBy(['lodestone_id' => $item->ID]);
             if (!$lodestoneClass)
@@ -76,6 +72,9 @@ class Classes extends Command
 
             $this->em->persist($lodestoneClass);
             $this->em->flush();
+
+            $progressBar->setMessage($item->Name_en.' imported');
+            $progressBar->advance();
         }
         $progressBar->finish();
     }

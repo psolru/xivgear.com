@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Lodestone\Api;
 use Lodestone\Entity\Character\CharacterProfile;
+use Lodestone\Entity\ListView\ListView;
 
 class Character extends AbstractService
 {
@@ -39,15 +40,63 @@ class Character extends AbstractService
         $this->projectDir = $projectDir;
     }
 
+    private function checkCharacterForPerfectMatch(ListView $res, string $name)
+    {
+        foreach ($res->Results as $character)
+        {
+            if (
+                $character->Name === $name
+            ) {
+                return $character;
+            }
+        }
+        return null;
+    }
+
+    private function searchForCharacter(string $name, string $server): ListView
+    {
+        $api = new Api();
+        return $api->searchCharacter($name, $server);
+    }
+
+    public function getCharacterIDBySearch($name, $server)
+    {
+        /**
+         * FFLogs doesn't store the character ID
+         * We need to look up name and server via XIVAPI-search...
+         * fucked up if a char transfers to another server...¯\_(ツ)_/¯
+         */
+        $res = $this->searchForCharacter($name, $server);
+
+        /**
+         * Only process 100% matches (name / server)
+         */
+        $character = $this->checkCharacterForPerfectMatch($res, $name);
+
+        if ($character)
+            return $character->ID;
+
+        return null;
+    }
+
     public function import(string $lodestoneId)
     {
         $this->getOrCreateEntity($lodestoneId);
 
         $this->parseLodestone($lodestoneId);
 
+        /**
+         * If Character would be created directly via LodestoneID, eg. over /characters/{lodestone_id}, check by name and server if there already is one
+         * Needed since we load characters from FFLogs, which are mapped by name/server INSTEAD of LodestoneID
+         */
+        if (!$this->entity->getId())
+            $this->loadCharacterByNameAndServer();
+
         $this->loadBasicInfo();
         $this->loadClasses();
         $this->loadGearSet();
+
+        $this->entity->setAutoAdded(false);
 
         $this->em->persist($this->entity);
         $this->em->flush();
@@ -104,7 +153,7 @@ class Character extends AbstractService
     {
         foreach ($this->lodestoneData->ClassJobs as $classJob)
         {
-            $map = new CharacterLodestoneClass();
+            $map = null;
             if ($this->entity->getId())
             {
                 $map = $this->em->getRepository(CharacterLodestoneClass::class)->findOneBy([
@@ -112,6 +161,10 @@ class Character extends AbstractService
                     'lodestone_character' => $this->entity
                 ]);
             }
+
+            if (!$map)
+                $map = new CharacterLodestoneClass();
+
             $map->setLodestoneClass($this->getLodestoneClass($classJob->JobID))
                 ->setLevel($classJob->Level)
                 ->setExperience($classJob->ExpLevel)
@@ -145,5 +198,22 @@ class Character extends AbstractService
 
         $this->em->persist($gearSet->entity);
         $this->entity->addGearSet($gearSet->entity);
+    }
+
+    public function setUpdateFailed(CharacterEntity $character)
+    {
+        $character->setUpdateFailed(true);
+        $this->em->persist($character);
+        $this->em->flush();
+    }
+
+    private function loadCharacterByNameAndServer()
+    {
+        $character = $this->em->getRepository(CharacterEntity::class)->findOneBy([
+            'name' => $this->lodestoneData->Name,
+            'server' => $this->lodestoneData->Server
+        ]);
+        if ($character)
+            $this->entity = $character;
     }
 }

@@ -49,6 +49,11 @@ class Zone
      */
     private $encounters;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isActive;
+
     public function __construct()
     {
         $this->encounters = new ArrayCollection();
@@ -146,6 +151,18 @@ class Zone
                 $encounter->setFflogsZone(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

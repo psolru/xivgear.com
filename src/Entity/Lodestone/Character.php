@@ -10,7 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Lodestone\CharacterRepository")
- * @ORM\Table(name="lodestone_character")
+ * @ORM\Table(name="lodestone_character", indexes={@ORM\Index(name="lodestone_id_idx", columns={"lodestone_id"})})
  */
 class Character
 {
@@ -23,7 +23,7 @@ class Character
     private $id;
 
     /**
-     * @ORM\Column(type="integer", unique=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $lodestone_id;
 

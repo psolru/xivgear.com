@@ -82,6 +82,11 @@ class Ranking
      */
     private $patch;
 
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $metric;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -227,6 +232,18 @@ class Ranking
     public function setPatch(float $patch): self
     {
         $this->patch = $patch;
+
+        return $this;
+    }
+
+    public function getMetric(): ?string
+    {
+        return $this->metric;
+    }
+
+    public function setMetric(string $metric): self
+    {
+        $this->metric = $metric;
 
         return $this;
     }

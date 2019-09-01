@@ -47,7 +47,8 @@ class CharacterRepository extends ServiceEntityRepository
      */
     public function getUpdateQueue(int $itemCount)
     {
-        return $this->defaultQueryBuilder()
+        return $this->createQueryBuilder('lc')
+            ->andWhere('lc.updateFailed IS NULL')
             ->andWhere('lc.updatedAt <= :date')
             ->setParameter('date', new DateTime('- 6 hours'))
             ->orderBy('lc.updatedAt', 'ASC')
@@ -78,6 +79,7 @@ class CharacterRepository extends ServiceEntityRepository
 
     private function defaultQueryBuilder() {
         return $this->createQueryBuilder('lc')
+            ->andWhere('lc.autoAdded IS NULL')
             ->andWhere('lc.updateFailed IS NULL');
     }
 

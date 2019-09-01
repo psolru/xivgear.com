@@ -51,11 +51,6 @@ class Encounter
     private $name_jp;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $importActive;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\FFLogs\Ranking", mappedBy="encounter")
      */
     private $rankings;
@@ -138,25 +133,6 @@ class Encounter
     public function setNameJp(?string $name_jp): self
     {
         $this->name_jp = $name_jp;
-
-        return $this;
-    }
-
-    public function importIsActive(): ?bool
-    {
-        return $this->importActive;
-    }
-
-    public function activateImport(): self
-    {
-        $this->importActive = true;
-
-        return $this;
-    }
-
-    public function deactivateImport(): self
-    {
-        $this->importActive = false;
 
         return $this;
     }

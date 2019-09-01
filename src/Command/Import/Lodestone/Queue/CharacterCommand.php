@@ -41,7 +41,7 @@ class CharacterCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $charactersToUpdate = 2;
+        $charactersToUpdate = 100;
         $queue = $this->em->getRepository(CharacterEntity::class)->getUpdateQueue($charactersToUpdate);
 
         if (!$queue) {
@@ -59,13 +59,27 @@ class CharacterCommand extends Command
         foreach ($queue as $character)
         {
             $progressBar->setMessage("[{$character->getLodestoneId()} ] {$character->getName()} - {$character->getServer()}");
-
+            $progressBar->advance();
             try {
+
+                if (!$character->getLodestoneId())
+                {
+                    $id = $this->api->getCharacterIDBySearch($character->getName(), $character->getServer());
+
+                    if (!$id) {
+                        $this->api->setUpdateFailed($character);
+                        throw new \Exception('Character not found');
+                    }
+
+                    $character->setLodestoneId($id);
+                    $this->em->persist($character);
+                    $this->em->flush();
+                }
                 $this->api->import($character->getLodestoneId());
             } catch (\Exception $e) {
+                $this->api->setUpdateFailed($character);
                 $io->error($e);
             }
-            $progressBar->advance();
         }
         $progressBar->finish();
     }

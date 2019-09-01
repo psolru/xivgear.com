@@ -79,7 +79,7 @@ class CharacterRepository extends ServiceEntityRepository
 
     private function defaultQueryBuilder() {
         return $this->createQueryBuilder('lc')
-            ->andWhere('lc.autoAdded IS NULL')
+            ->andWhere('lc.autoAdded = 0')
             ->andWhere('lc.updateFailed IS NULL');
     }
 

@@ -7,7 +7,6 @@
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "ext-redis": "^3.1",
         "ext-yaml": "*",
         "beberlei/doctrineextensions": "^1.2",
         "cron/cron-bundle": "^2.1",

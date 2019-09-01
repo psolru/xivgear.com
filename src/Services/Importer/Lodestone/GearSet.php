@@ -22,10 +22,6 @@ class GearSet extends AbstractService
      * @var GearsetItemService
      */
     private $gearsetItemService;
-    /**
-     * @var int
-     */
-    private $itemLevelSum = 0;
 
     public function __construct(EntityManagerInterface $em, GearsetItemService $gearsetItemService)
     {
@@ -100,25 +96,26 @@ class GearSet extends AbstractService
 
         $this->em->persist($gearSetItem);
 
-        // sum iLevel for later
-        if (lcfirst($data->Slot) != 'soulCrystal')
-            $this->itemLevelSum += $item->getLevelItem();
-
         // add gearSetItem to gearSet for later
         $this->entity->addGearsetItem($gearSetItem);
     }
 
     public function calculateILevel()
     {
+        $itemLevelSum=0;
         $offHand = false;
         foreach ($this->entity->getGearsetItems() as $gearsetItem)
         {
+            $item = ItemService::get($gearsetItem->getItemId());
+            if (lcfirst($gearsetItem->getSlot()) != 'soulCrystal')
+                $itemLevelSum += $item->getLevelItem();
+
             if ($gearsetItem->getSlot() == 'offHand')
                 $offHand = true;
         }
 
         $this->entity->setILevel(
-            $offHand ? floor($this->itemLevelSum/13) : floor($this->itemLevelSum/12)
+            $offHand ? floor($itemLevelSum/13) : floor($itemLevelSum/12)
         );
     }
 }

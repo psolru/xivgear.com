@@ -2,7 +2,7 @@
 
 namespace App\Entity\Lodestone;
 
-use App\Entity\GearSet;
+use App\Entity\FFLogs\Ranking;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Lodestone\CharacterRepository")
- * @ORM\Table(name="lodestone_character")
+ * @ORM\Table(name="lodestone_character", indexes={@ORM\Index(name="lodestone_id_idx", columns={"lodestone_id"})})
  */
 class Character
 {
@@ -23,7 +23,7 @@ class Character
     private $id;
 
     /**
-     * @ORM\Column(type="integer", unique=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $lodestone_id;
 
@@ -58,7 +58,7 @@ class Character
     private $lodestoneClassMappings;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\GearSet", mappedBy="lodestone_character")
+     * @ORM\OneToMany(targetEntity="App\Entity\Lodestone\GearSet", mappedBy="lodestone_character")
      */
     private $gearSets;
 
@@ -72,10 +72,16 @@ class Character
      */
     private $autoAdded;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FFLogs\Ranking", mappedBy="lodestone_character")
+     */
+    private $rankings;
+
     public function __construct()
     {
         $this->lodestoneClassMappings = new ArrayCollection();
         $this->gearSets = new ArrayCollection();
+        $this->rankings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,6 +263,37 @@ class Character
     public function setAutoAdded(?bool $autoAdded): self
     {
         $this->autoAdded = $autoAdded;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ranking[]
+     */
+    public function getRankings(): Collection
+    {
+        return $this->rankings;
+    }
+
+    public function addRanking(Ranking $ranking): self
+    {
+        if (!$this->rankings->contains($ranking)) {
+            $this->rankings[] = $ranking;
+            $ranking->setLodestoneCharacter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRanking(Ranking $ranking): self
+    {
+        if ($this->rankings->contains($ranking)) {
+            $this->rankings->removeElement($ranking);
+            // set the owning side to null (unless already changed)
+            if ($ranking->getLodestoneCharacter() === $this) {
+                $ranking->setLodestoneCharacter(null);
+            }
+        }
 
         return $this;
     }

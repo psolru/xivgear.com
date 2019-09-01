@@ -85,7 +85,7 @@ class Character extends AbstractController
                 'vitality' => $gearSet->getAttribute('vitality'),
                 'intelligence' => $gearSet->getAttribute('intelligence'),
                 'mind' => $gearSet->getAttribute('mind'),
-                'criticalHit' => $gearSet->getAttribute('criticalHit'),
+                'criticalHitRate' => $gearSet->getAttribute('criticalHitRate'),
                 'determination' => $gearSet->getAttribute('determination'),
                 'directHitRate' => $gearSet->getAttribute('directHitRate'),
                 'defense' => $gearSet->getAttribute('defense'),
@@ -123,14 +123,9 @@ class Character extends AbstractController
     {
         $character = $this->service->get($lodestone_id);
 
-        if ($character->isJustCreated()) {
-            return $this->redirectToRoute('lodestone_character', ['lodestone_id' => $lodestone_id]);
-        }
-
        return $this->render('lodestone_character/index.html.twig', [
             'controller_name' => 'Character',
-            'character' => $character,
-            'showCreationHint' => strtotime('+10 seconds', $character->getUpdatedAt()->getTimestamp()) >= strtotime('now') ? true : false
+            'character' => $character
         ]);
     }
 }

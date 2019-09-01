@@ -6,14 +6,15 @@
 <div class="equip-image gear-{{ slot }}">
 {% endif %}
 
-    <img class="shadow {% if gearsetItem is null %}placeholder{% endif %}" src="{% if gearsetItem is not null %}https://xivapi.com{{ gearsetItem.Item.iconUrl }}{% endif %}">
+    <img class="shadow {% if gearsetItem is null %}placeholder{% endif %}" src="{% if gearsetItem is not null %}https://xivapi.com/{{ gearsetItem.Item.iconUrl }}{% endif %}">
+
     {% if gearsetItem is not null %}
         <img class="equip-image-glossy" style="top:{% if slot == 'mainHand' %}4px{% else %}-1px{% endif %};" src="https://img.finalfantasyxiv.com/lds/h/J/-A7DYl4vvLtvGz_nshoUsqtrEc.png">
         <div id="{{ uiDetails }}" class="equip-details shadow bg-dark rounded p-2 border border-primary" style="cursor:default;position: absolute;z-index: 1;top: 0;right: 44px;width: 350px;{% if slot != '' %}display: none;{% endif %}">
             <div class="d-flex">
-                <img class="mr-2 mb-1" src="https://xivapi.com{{ gearsetItem.Item.iconUrl }}">
+                <img class="mr-2 mb-1" src="https://xivapi.com/{{ gearsetItem.Item.iconUrl }}">
                 <div>
-                    <span class="text-primary">{{ gearsetItem.Item.nameEn }}</span><br>
+                    <span class="text-primary">{{ gearsetItem.Item.name }}</span><br>
                 </div>
             </div>
             <div class="rounded px-2 d-flex justify-content-between mb-2" style="background-color: #242628;">
@@ -35,7 +36,7 @@
                         <img class="mb-1" style="height: 25px; width: 25px;" src="https://xivapi.com{{ materia.iconUrl }}">
                     </td>
                     <td class="py-0 pl-1">
-                        {{ materia.nameEn }}
+                        {{ materia.name }}
                     </td>
                 </tr>
                 <tr>
@@ -49,8 +50,8 @@
                 </table>
             {% endif %}
             <hr class="mt-1 mb-2 border-light">
-            <small class="small"><a target="_blank" href="https://garlandtools.org/db/#item/{{ gearsetItem.Item.lodestoneId }}">Details (Garland Tool)</a></small><br>
-            <small class="small"><a target="_blank" href="https://ffxivteamcraft.com/db/en/item/{{ gearsetItem.Item.lodestoneId }}/{{ gearsetItem.Item.nameEn }}">Details (Teamcraft)</a></small>
+            <small class="small"><a target="_blank" href="https://garlandtools.org/db/#item/{{ gearsetItem.Item.id }}">Details (Garland Tool)</a></small><br>
+            <small class="small"><a target="_blank" href="https://ffxivteamcraft.com/db/en/item/{{ gearsetItem.Item.id }}/{{ gearsetItem.Item.name }}">Details (Teamcraft)</a></small>
         </div>
         <script>
             (function () {
@@ -58,7 +59,7 @@
                     if ($('#{{ uiDetails }}').css('display') == 'block') {
                         clearInterval(interval)
 
-                        $.post('https://xivapi.com/item/{{ gearsetItem.Item.lodestoneId }}?columns=ClassJobCategory.Name,BaseParam0.Name_en,BaseParamValue0,BaseParam1.Name_en,BaseParamValue1,BaseParam2.Name_en,BaseParamValue2,BaseParam3.Name_en,BaseParamValue3,BaseParam4.Name_en,BaseParamValue4,BaseParamValue5.Name_en', function(res, ok) {
+                        $.post('https://xivapi.com/item/{{ gearsetItem.Item.id }}?columns=ClassJobCategory.Name,BaseParam0.Name_en,BaseParamValue0,BaseParam1.Name_en,BaseParamValue1,BaseParam2.Name_en,BaseParamValue2,BaseParam3.Name_en,BaseParamValue3,BaseParam4.Name_en,BaseParamValue4,BaseParamValue5.Name_en', function(res, ok) {
                             if (ok == 'success') {
                                 let list = new Array()
                                 // set classjobs
@@ -89,7 +90,7 @@
 
                                 {% for materia in gearsetItem.getMateria %}
                                 setTimeout(function() {
-                                    $.post('https://xivapi.com/item/{{ materia.lodestoneId }}?columns=Materia.BaseParam.Name,Materia.Value', function(res, ok) {
+                                    $.post('https://xivapi.com/item/{{ materia.id }}?columns=Materia.BaseParam.Name,Materia.Value', function(res, ok) {
                                         if (ok == 'success') {
                                             $('#{{ uiDetails }}-mat{{ loop.index0 }}-stats').html('- <strong>'+res.Materia.BaseParam.Name+'</strong> +'+res.Materia.Value)
                                         }

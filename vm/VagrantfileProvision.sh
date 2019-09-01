@@ -6,7 +6,7 @@
 echo "Setting up"
 sudo apt-get update -y
 sudo apt-get upgrade -y
-sudo apt-get install -y htop curl git
+sudo apt-get install -y htop curl git unzip
 
 #
 # Apache2
@@ -58,6 +58,12 @@ mv composer.phar /usr/local/bin/composer
 echo "Installing: Adminer"
 sudo mkdir -p /var/www/xivgear.adminer
 wget https://www.adminer.org/latest-mysql.php -O /var/www/xivgear.adminer/index.php
+
+#
+# Redis
+#
+echo "Installing: Redis"
+sudo apt-get install redis-server php-redis -y
 
 #
 # Finishing

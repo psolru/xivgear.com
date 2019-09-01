@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\GearSetRepository;
+use App\Repository\Lodestone\GearSetRepository;
 use App\Repository\Lodestone\CharacterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

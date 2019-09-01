@@ -6,7 +6,7 @@
 echo "Setting up"
 sudo apt-get update -y
 sudo apt-get upgrade -y
-sudo apt-get install -y htop curl git
+sudo apt-get install -y htop curl git unzip
 
 #
 # Apache2

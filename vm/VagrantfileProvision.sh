@@ -60,6 +60,12 @@ sudo mkdir -p /var/www/xivgear.adminer
 wget https://www.adminer.org/latest-mysql.php -O /var/www/xivgear.adminer/index.php
 
 #
+# Redis
+#
+echo "Installing: Redis"
+sudo apt-get install redis-server php-redis -y
+
+#
 # Finishing
 #
 echo "Finishing up…"

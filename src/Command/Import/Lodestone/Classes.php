@@ -48,6 +48,7 @@ class Classes extends Command
 
         $progressBar->start();
         for ($i=0;$i<=38;$i++) {
+            $progressBar->advance();
 
             $item = json_decode(file_get_contents('https://xivapi.com/ClassJob/'.$i.'?private_key='.$_ENV['XIVAPI_KEY']));
 
@@ -75,8 +76,6 @@ class Classes extends Command
 
             $this->em->persist($lodestoneClass);
             $this->em->flush();
-
-            $progressBar->advance();
         }
         $progressBar->finish();
     }

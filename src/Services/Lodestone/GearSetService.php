@@ -3,11 +3,10 @@
 
 namespace App\Services\Lodestone;
 
-use App\Entity\GearSet;
+use App\Entity\Lodestone\GearSet;
 use App\Entity\Lodestone\Character;
 use App\Entity\Lodestone\LodestoneClass;
 use App\Services\AbstractService;
-use App\Services\GearsetItemService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Lodestone;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Services\Lodestone\ItemService;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GearsetItemRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Lodestone\GearsetItemRepository")
+ * @ORM\Table(name="gearset_item")
  */
 class GearsetItem
 {
@@ -21,7 +21,7 @@ class GearsetItem
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\GearSet", inversedBy="gearsetItems")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lodestone\GearSet", inversedBy="gearsetItems")
      * @ORM\JoinColumn(nullable=false)
      */
     private $gearset;
@@ -32,20 +32,25 @@ class GearsetItem
     private $slot;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Item", inversedBy="gearsetItems")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
+     */
+    private $itemId;
+
+    /**
+     * @var Item $item
      */
     private $item;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Item", inversedBy="gearsetItemsMateria")
+     * stored like "|123|541|7456|"
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $materia;
+    private $materiaIds;
 
-    public function __construct()
-    {
-        $this->materia = new ArrayCollection();
-    }
+    /**
+     * @var Item[] $materiaCollection
+     */
+    private $materiaCollection=[];
 
     public function getId(): ?int
     {
@@ -76,39 +81,57 @@ class GearsetItem
         return $this;
     }
 
-    public function getItem(): ?Item
+    public function getItemId(): ?int
     {
-        return $this->item;
+        return $this->itemId;
     }
 
-    public function setItem(?Item $item): self
+    public function setItemId(int $itemId): self
     {
-        $this->item = $item;
+        $this->itemId = $itemId;
 
         return $this;
+    }
+
+    public function getItem(): Item
+    {
+        if ($this->item)
+            return $this->item;
+
+        if (!$this->getItemId())
+            return new Item();
+
+        return ItemService::get($this->getItemId());
     }
 
     /**
-     * @return Collection|Item[]
+     * @return Item[]
      */
-    public function getMateria(): Collection
+    public function getMateria(): array
     {
-        return $this->materia;
+        if (!$this->materiaIds || $this->materiaCollection)
+            return $this->materiaCollection;
+
+        $this->materiaCollection = [];
+        foreach (explode('|', trim($this->materiaIds, '|')) as $id)
+        {
+            $this->materiaCollection[] = ItemService::get($id);
+        }
+        return $this->materiaCollection;
     }
 
-    public function addMateria(Item $materia): self
+    public function addMateria(Item $materia): GearsetItem
     {
-        if (!$this->materia->contains($materia)) {
-            $this->materia[] = $materia;
+        $alreadyMapped = false;
+        foreach ($this->getMateria() as $cur)
+        {
+            if ($cur->getId() == $materia->getId())
+                $alreadyMapped = true;
         }
 
-        return $this;
-    }
+        if (!$alreadyMapped)
+        {
 
-    public function removeMateria(Item $materia): self
-    {
-        if ($this->materia->contains($materia)) {
-            $this->materia->removeElement($materia);
         }
 
         return $this;

@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Services\Lodestone;
 
-use App\Entity\GearsetItem;
+use App\Entity\Lodestone\GearsetItem;
+use App\Services\AbstractService;
 
 class GearsetItemService extends AbstractService
 {

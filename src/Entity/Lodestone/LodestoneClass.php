@@ -2,7 +2,7 @@
 
 namespace App\Entity\Lodestone;
 
-use App\Entity\GearSet;
+use App\Entity\FFLogs\Ranking;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -100,7 +100,7 @@ class LodestoneClass
     private $lodestoneCharacterMappings;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\GearSet", mappedBy="lodestone_class")
+     * @ORM\OneToMany(targetEntity="App\Entity\Lodestone\GearSet", mappedBy="lodestone_class")
      */
     private $gearSets;
 
@@ -109,10 +109,16 @@ class LodestoneClass
      */
     private $iconUrl;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FFLogs\Ranking", mappedBy="lodestone_class")
+     */
+    private $rankings;
+
     public function __construct()
     {
         $this->lodestoneCharacterMappings = new ArrayCollection();
         $this->gearSets = new ArrayCollection();
+        $this->rankings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -378,5 +384,36 @@ class LodestoneClass
             return 'gatherer';
 
         return 'none';
+    }
+
+    /**
+     * @return Collection|Ranking[]
+     */
+    public function getRankings(): Collection
+    {
+        return $this->rankings;
+    }
+
+    public function addRanking(Ranking $ranking): self
+    {
+        if (!$this->rankings->contains($ranking)) {
+            $this->rankings[] = $ranking;
+            $ranking->setLodestoneClass($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRanking(Ranking $ranking): self
+    {
+        if ($this->rankings->contains($ranking)) {
+            $this->rankings->removeElement($ranking);
+            // set the owning side to null (unless already changed)
+            if ($ranking->getLodestoneClass() === $this) {
+                $ranking->setLodestoneClass(null);
+            }
+        }
+
+        return $this;
     }
 }

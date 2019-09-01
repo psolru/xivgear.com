@@ -3,9 +3,7 @@
 
 namespace App\Services;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use XIVAPI\XIVAPI;
 
 class AbstractService
 {

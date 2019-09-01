@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Lodestone;
 
-use App\Entity\Lodestone\Character;
-use App\Entity\Lodestone\LodestoneClass;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GearSetRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Lodestone\GearSetRepository")
+ * @ORM\Table(name="gear_set")
  */
 class GearSet
 {
@@ -170,7 +169,7 @@ class GearSet
     private $tP;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\GearsetItem", mappedBy="gearset")
+     * @ORM\OneToMany(targetEntity="App\Entity\Lodestone\GearsetItem", mappedBy="gearset")
      */
     private $gearsetItems;
 

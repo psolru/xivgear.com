@@ -105,20 +105,18 @@ class GearSet extends AbstractService
     public function calculateILevel()
     {
         $itemLevelSum=0;
-        $offHand = false;
         foreach ($this->entity->getGearsetItems() as $gearsetItem)
         {
             $item = ItemService::get($gearsetItem->getItemId());
-            if (lcfirst($gearsetItem->getSlot()) != 'soulCrystal')
-                $itemLevelSum += $item->getLevelItem();
 
-            if ($gearsetItem->getSlot() == 'offHand')
-                $offHand = true;
+            if (lcfirst($gearsetItem->getSlot()) == 'mainHand')
+                $itemLevelSum += $item->getLevelItem()*2;
+
+            else if (lcfirst($gearsetItem->getSlot()) != 'soulCrystal')
+                $itemLevelSum += $item->getLevelItem();
         }
 
-        $this->entity->setILevel(
-            $offHand ? floor($itemLevelSum/13) : floor($itemLevelSum/12)
-        );
+        $this->entity->setILevel(floor($itemLevelSum/13));
     }
 }
 

@@ -120,19 +120,26 @@ class GearsetItem
         return $this->materiaCollection;
     }
 
+    public function clearMateria(): GearsetItem
+    {
+        $this->materiaIds = null;
+        return $this;
+    }
+
     public function addMateria(Item $materia): GearsetItem
     {
-        $alreadyMapped = false;
-        foreach ($this->getMateria() as $cur)
-        {
-            if ($cur->getId() == $materia->getId())
-                $alreadyMapped = true;
-        }
+        $toAdd = $materia->getId();
 
-        if (!$alreadyMapped)
+        $list = [];
+        foreach (explode('|', trim($this->materiaIds, '|')) as $el)
         {
-
+            if ($el) {
+                $list[] = $el;
+            }
         }
+        $list[] = $toAdd;
+
+        $this->materiaIds = '|'.trim(implode('|', $list), '|').'|';
 
         return $this;
     }

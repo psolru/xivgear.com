@@ -33,7 +33,12 @@ class Character extends AbstractController
      */
     public function index($lodestone_id)
     {
-        $character = $this->service->get($lodestone_id);
+        try {
+            $character = $this->service->get($lodestone_id);
+        }
+        catch (Exception $e) {
+            $character = null;
+        }
 
        return $this->render('lodestone_character/index.html.twig', [
             'controller_name' => 'Character',

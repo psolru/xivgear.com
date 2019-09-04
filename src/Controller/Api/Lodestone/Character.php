@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Lodestone;
 
+use App\Controller\Api\ApiHelpers;
 use App\Services\Lodestone\CharacterService;
 use App\Services\Lodestone\ItemService;
 use Exception;
@@ -38,6 +39,7 @@ class Character extends AbstractController
     {
         $job = $request->get('job');
         $role = $request->get('role');
+        $extended = $request->get('extended');
 
         $character = $this->service->get($lodestone_id);
 
@@ -66,8 +68,8 @@ class Character extends AbstractController
                 'level' => $lodestoneClass->getLevel(),
                 'experience' => $lodestoneClass->getExperience(),
                 'experienceTotal' => $lodestoneClass->getExperienceTotal(),
-                'stats' => null,
-                'gear' => null
+                'gear' => null,
+                'attributes' => null
             ];
         }
 
@@ -81,7 +83,50 @@ class Character extends AbstractController
                 if ($role != $gearSet->getLodestoneClass()->getType())
                     continue;
 
-            $data['jobs'][strtolower($gearSet->getLodestoneClass()->getShortEn())]['stats'] = [
+            $data['jobs'][strtolower($gearSet->getLodestoneClass()->getShortEn())]['gear'] = [
+                'iLevel' => $gearSet->getILevel(),
+                'mainHand' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('mainHand'), $extended ?: false
+                ),
+                'head' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('head'), $extended ?: false
+                ),
+                'body' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('body'), $extended ?: false
+                ),
+                'hands' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('hands'), $extended ?: false
+                ),
+                'waist' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('waist'), $extended ?: false
+                ),
+                'legs' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('legs'), $extended ?: false
+                ),
+                'feet' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('feet'), $extended ?: false
+                ),
+                'earrings' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('earrings'), $extended ?: false
+                ),
+                'necklace' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('necklace'), $extended ?: false
+                ),
+                'bracelets' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('bracelets'), $extended ?: false
+                ),
+                'ring1' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('ring1'), $extended ?: false
+                ),
+                'ring2' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('ring2'), $extended ?: false
+                ),
+                'soulCrystal' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('soulCrystal'), $extended ?: false
+                ),
+            ];
+
+            $data['jobs'][strtolower($gearSet->getLodestoneClass()->getShortEn())]['attributes'] = [
                 'iLevel' => $gearSet->getILevel(),
                 'dexterity' => $gearSet->getAttribute('dexterity'),
                 'vitality' => $gearSet->getAttribute('vitality'),
@@ -109,55 +154,6 @@ class Character extends AbstractController
                 'mP' => $gearSet->getAttribute('mP'),
                 'tP' => $gearSet->getAttribute('tP')
             ];
-
-            $gear = [
-                'mainHand' => (array) $gearSet->getGearsetItemBySlot('mainHand')
-            ];
-            dump($gear);
-            die;
-
-            $gear = [
-                'iLevel' => $gearSet->getILevel(),
-                'mainHand' => null,
-                'head' => null,
-                'body' => null,
-                'hands' => null,
-                'waist' => null,
-                'legs' => null,
-                'feet' => null,
-                'earrings' => null,
-                'necklace' => null,
-                'bracelets' => null,
-                'ring1' => null,
-                'ring2' => null,
-                'soulCrystal' => null
-            ];
-            foreach ($gearSet->getGearsetItems() as $gearsetItem)
-            {
-                $item = ItemService::get($gearsetItem->getItemId());
-                $gear[$gearsetItem->getSlot()] = [
-                    'id' => $item->getId(),
-                    'name' => $item->getName(),
-                    'iconUrl' => $item->getIconUrl(),
-                    'levelItem' => $item->getLevelItem(),
-                    'levelEquip' => $item->getLevelEquip(),
-                    'materia' => null
-                ];
-
-                $materiaList = [];
-                foreach ($gearsetItem->getMateria() as $materiaItem)
-                {
-                    $materiaList[] = [
-                        'id' => $materiaItem->getId(),
-                        'name' => $materiaItem->getName(),
-                        'iconUrl' => $materiaItem->getIconUrl(),
-                        'levelItem' => $materiaItem->getLevelItem(),
-                        'levelEquip' => $materiaItem->getLevelEquip()
-                    ];
-                }
-                $gear[$gearsetItem->getSlot()]['materia'] = $materiaList;
-            }
-            $data['jobs'][strtolower($gearSet->getLodestoneClass()->getShortEn())]['gear'] = $gear;
         }
 
         return $this->json($data);

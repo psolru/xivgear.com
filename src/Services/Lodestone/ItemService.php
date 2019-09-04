@@ -48,4 +48,18 @@ class ItemService extends AbstractService
 
         return $item;
     }
+
+    public static function getAsArray(?int $getItemId)
+    {
+        $item = self::get($getItemId);
+        $arr = [
+            'id' => $item->getId(),
+            'name' => $item->getName(),
+            'iconUrl' => $item->getIconUrl(),
+            'levelItem' => $item->getLevelItem(),
+            'levelEquip' => $item->getLevelEquip()
+        ];
+
+        return $arr;
+    }
 }

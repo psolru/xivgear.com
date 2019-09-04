@@ -82,12 +82,14 @@ class GearSet extends AbstractService
     {
         // get item from redis
         $item = ItemService::get($data->Name);
+
         // create gearSetItem
         $gearSetItem = $this->gearsetItemService
-                    ->getOrCreate(['gearset' => $this->entity])
+                    ->getOrCreate(['gearset' => $this->entity, 'slot' => lcfirst($data->Slot)])
                     ->setItemId($item->getId())
                     ->setSlot(lcfirst($data->Slot));
 
+        $gearSetItem->clearMateria();
         foreach($data->Materia as $materia)
         {
             $item = ItemService::get($materia->Name);

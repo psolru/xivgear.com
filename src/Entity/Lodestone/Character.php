@@ -59,6 +59,7 @@ class Character
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Lodestone\GearSet", mappedBy="lodestone_character")
+     * @ORM\OrderBy({"updatedAt" = "DESC"})
      */
     private $gearSets;
 

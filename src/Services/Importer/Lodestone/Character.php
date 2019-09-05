@@ -96,6 +96,7 @@ class Character extends AbstractService
         $this->loadClasses();
         $this->loadGearSet();
 
+        $this->entity->setUpdatedAt(new \DateTime());
         $this->entity->setAutoAdded(false);
 
         $this->em->persist($this->entity);

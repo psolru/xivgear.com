@@ -22,20 +22,20 @@ class CharacterRepository extends ServiceEntityRepository
         parent::__construct($registry, Character::class);
     }
 
-    public function getRecentlyAdded()
+    public function getRecentlyAdded(int $count)
     {
         return $this->defaultQueryBuilder()
             ->orderBy('lc.createdAt', 'DESC')
-            ->setMaxResults(5)
+            ->setMaxResults($count)
             ->getQuery()
             ->getResult();
     }
 
-    public function getRecentlyUpdated()
+    public function getRecentlyUpdated(int $count)
     {
         return $this->defaultQueryBuilder()
             ->orderBy('lc.updatedAt', 'DESC')
-            ->setMaxResults(5)
+            ->setMaxResults($count)
             ->getQuery()
             ->getResult();
     }

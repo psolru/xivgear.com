@@ -93,7 +93,11 @@ class GearsetItem
         return $this;
     }
 
-    public function getItem(): Item
+    /**
+     * @param bool $asArray
+     * @return Item|array
+     */
+    public function getItem(bool $asArray=false)
     {
         if ($this->item)
             return $this->item;
@@ -101,13 +105,14 @@ class GearsetItem
         if (!$this->getItemId())
             return new Item();
 
-        return ItemService::get($this->getItemId());
+        return ItemService::get($this->getItemId(), $asArray);
     }
 
     /**
+     * @param bool $asArray
      * @return Item[]
      */
-    public function getMateria(): array
+    public function getMateria(bool $asArray=false): array
     {
         if (!$this->materiaIds || $this->materiaCollection)
             return $this->materiaCollection;
@@ -115,7 +120,7 @@ class GearsetItem
         $this->materiaCollection = [];
         foreach (explode('|', trim($this->materiaIds, '|')) as $id)
         {
-            $this->materiaCollection[] = ItemService::get($id);
+            $this->materiaCollection[] = ItemService::get($id, $asArray);
         }
         return $this->materiaCollection;
     }
@@ -142,5 +147,20 @@ class GearsetItem
         $this->materiaIds = '|'.trim(implode('|', $list), '|').'|';
 
         return $this;
+    }
+
+    public function toArray()
+    {
+        $array = [
+            'id' => $this->id,
+            'slot' => $this->slot,
+            'itemId' => $this->itemId,
+            'Item' => $this->getItem(true)
+        ];
+        foreach ($this->getMateria(true) as $materia)
+        {
+            $array['materia'][] = $materia;
+        }
+        return $array;
     }
 }

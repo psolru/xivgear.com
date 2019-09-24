@@ -9,16 +9,24 @@ use App\Services\Lodestone\ItemService;
 
 class ApiHelpers
 {
-    public static function convertGearSetItemToArray(GearsetItem $gearsetItem, bool $extended=false)
+    /**
+     * @param GearsetItem|null $gearsetItem
+     * @param bool $extended
+     * @return array|null
+     */
+    public static function convertGearSetItemToArray($gearsetItem, $extended=false)
     {
+        if (!$gearsetItem)
+            return null;
+
         if ($extended)
         {
-            $arr = ItemService::getAsArray($gearsetItem->getItemId());
+            $arr = ItemService::get($gearsetItem->getItemId(), true);
 
             $materiaList = [];
             foreach ($gearsetItem->getMateria() as $materiaItem)
             {
-                $materiaList[] = ItemService::getAsArray($materiaItem->getId());
+                $materiaList[] = ItemService::get($materiaItem->getId(), true);
             }
 
             $arr['materia'] = $materiaList ?: null;

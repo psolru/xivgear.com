@@ -88,6 +88,9 @@ class Character extends AbstractController
                 'mainHand' => ApiHelpers::convertGearSetItemToArray(
                     $gearSet->getGearsetItemBySlot('mainHand'), $extended ?: false
                 ),
+                'offHand' => ApiHelpers::convertGearSetItemToArray(
+                    $gearSet->getGearsetItemBySlot('offHand'), $extended ?: false
+                ),
                 'head' => ApiHelpers::convertGearSetItemToArray(
                     $gearSet->getGearsetItemBySlot('head'), $extended ?: false
                 ),
@@ -127,7 +130,6 @@ class Character extends AbstractController
             ];
 
             $data['jobs'][strtolower($gearSet->getLodestoneClass()->getShortEn())]['attributes'] = [
-                'iLevel' => $gearSet->getILevel(),
                 'dexterity' => $gearSet->getAttribute('dexterity'),
                 'vitality' => $gearSet->getAttribute('vitality'),
                 'intelligence' => $gearSet->getAttribute('intelligence'),

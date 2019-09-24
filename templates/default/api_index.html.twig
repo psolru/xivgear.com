@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('api-doc') }}
+{% endblock %}
+
+{% block body %}
+    <main class="sitemain sitemain-nonav mw-100">
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <div id="character" class="content-card position-relative">
+                    <div class="row">
+                        <div class="col-12 p-2">
+                            <h5 class="endpoint border-left border-primary pl-2">
+                                <code>
+                                    /character/[lodestoneID]<br>
+                                </code>
+                                <small>
+                                    {# TODO - $_ENV[BASE_HOST] #}
+                                    <a target="_blank" href="http://api.xivgear.local/character/11756305">http://api.xivgear.local/character/11756305</a>
+                                </small>
+                            </h5>
+                            <table class="param-table w-100">
+                                <tr class="bg-secondary">
+                                    <th>Parameter</th>
+                                    <th class="pl-5">Description</th>
+                                </tr>
+                                <tr class="border-bottom bg-dark">
+                                    <td class="align-top">
+                                        <div class="text-primary">
+                                            extended
+                                        </div>
+                                    </td>
+                                    <td class="pl-5 align-top text-white">
+                                        If set to 1, the API will return more information, instead of only the IDs of items.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="align-top">
+                                        <div class="text-primary">
+                                            job
+                                        </div>
+                                    </td>
+                                    <td class="pl-5 align-top text-white">
+                                        <div>
+                                            Select one specific job. By default, every job will be returned.<br>
+                                            <br>
+                                            Available options are:<br>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="align-top">
+                                        <div class="text-primary">
+                                            role
+                                        </div>
+                                    </td>
+                                    <td class="pl-5 align-top text-white">
+                                        <div>
+                                            Select the role. By default, every role will be returned.<br>
+                                            <br>
+                                            Available options are:<br>
+                                            <span class="text-primary">tank</span>, <span class="text-primary">healer</span>, <span class="text-primary">dps</span>, <span class="text-primary">crafter</span>, <span class="text-primary">gatherer</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

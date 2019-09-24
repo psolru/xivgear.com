@@ -195,7 +195,10 @@ class Character extends AbstractService
         $gearSet->calculateILevel();
 
         // store Character Image
-        file_put_contents($this->projectDir.'/public/data/gearset/'.$this->entity->getLodestoneId().'_'.strtolower($lodestoneClass->getShortEn()).'.jpg', file_get_contents($this->entity->getPortraitUrl().'?='.time()));
+        file_put_contents(
+            $this->projectDir.'/public/data/gearset/'.$this->entity->getLodestoneId().'_'.strtolower($lodestoneClass->getShortEn()).'.jpg',
+            file_get_contents($this->entity->getPortraitUrl().'?='.time())
+        );
 
         $this->em->persist($gearSet->entity);
         $this->entity->addGearSet($gearSet->entity);

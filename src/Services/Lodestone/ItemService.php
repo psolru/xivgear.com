@@ -36,9 +36,10 @@ class ItemService extends AbstractService
 
     /**
      * @param string $key
-     * @return Item
+     * @param bool $asArray
+     * @return Item|array
      */
-    public static function get(string $key)
+    public static function get(string $key, bool $asArray=false)
     {
         $cachedItem = Redis::Cache()->hGetAll(
             'Item_'.self::clearName($key)
@@ -46,20 +47,16 @@ class ItemService extends AbstractService
 
         $item = new Item($cachedItem);
 
+        if ($asArray)
+        {
+            return [
+                'id' => $item->getId(),
+                'name' => $item->getName(),
+                'iconUrl' => $item->getIconUrl(),
+                'levelItem' => $item->getLevelItem(),
+                'levelEquip' => $item->getLevelEquip()
+            ];
+        }
         return $item;
-    }
-
-    public static function getAsArray(?int $getItemId)
-    {
-        $item = self::get($getItemId);
-        $arr = [
-            'id' => $item->getId(),
-            'name' => $item->getName(),
-            'iconUrl' => $item->getIconUrl(),
-            'levelItem' => $item->getLevelItem(),
-            'levelEquip' => $item->getLevelEquip()
-        ];
-
-        return $arr;
     }
 }

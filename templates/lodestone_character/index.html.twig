@@ -9,6 +9,16 @@
     {% endif %}
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('character') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('character') }}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     <main class="sitemain">
 
@@ -63,6 +73,7 @@
                         #}
                     </table>
                 </div>
+
                 <div class="w-100">
                     <div class="content-card">
                         <div class="row">
@@ -74,13 +85,13 @@
                                     <div style="min-width: 145px;max-width: 145px;">
                                         <div class="class-selector text-light pb-3 mb-3">
                                             {% for gearset in character.gearSets %}
-                                            <div
-                                                class="px-3 mb-1 classtype-{{ gearset.lodestoneClass.getType() }} cuPo"
-                                                onclick="viewGear('{{ gearset.lodestoneClass.shortEn|lower }}')"
-                                                style="background-image: url('https://xivapi.com{{ gearset.lodestoneClass.iconUrl }}');"
-                                            >
-                                                {{ gearset.lodestoneClass.nameEn|capitalize }}
-                                            </div>
+                                                <div
+                                                    data-class="{{ gearset.lodestoneClass.shortEn|lower }}"
+                                                    class="px-3 mb-1 gearswitcher classtype-{{ gearset.lodestoneClass.getType() }} cuPo"
+                                                    style="background-image: url('https://xivapi.com{{ gearset.lodestoneClass.iconUrl }}');"
+                                                >
+                                                    {{ gearset.lodestoneClass.nameEn|capitalize }}
+                                                </div>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -96,7 +107,7 @@
                                         {% endfor %}
                                     </div>
                                     <div style="min-width: 350px;max-width: 350px;">
-                                        <div class="gear-list ml-auto">
+                                        <div id="gearList" class="gear-list ml-auto">
                                             {% set i=0 %}
                                             {% for gearset in character.gearSets %}
                                                 {% set i=i+1 %}
@@ -107,15 +118,6 @@
                                                 }) }}
                                             {% endfor %}
                                         </div>
-                                        <script>
-                                            function viewGear(_class) {
-                                                $('.gear-overview').hide();
-                                                $('#gear-'+_class).show();
-
-                                                $('.gear-stats').hide();
-                                                $('#gear-stats-'+_class).show();
-                                            }
-                                        </script>
                                     </div>
                                 </div>
                             </div>

@@ -5,9 +5,11 @@
 /vm/.vagrant
 /vm/ubuntu-bionic-18.04-cloudimg-console.log
 
-### phpstorm configs ###
+# phpstorm configs
 .idea
-###
+
+.sass-cache/
+
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -28,3 +30,11 @@
 ###< symfony/web-server-bundle ###
 
 !**/.gitkeep
+
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

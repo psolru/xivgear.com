@@ -36,7 +36,9 @@
         "symfony/twig-bundle": "4.3.*",
         "symfony/validator": "4.3.*",
         "symfony/web-link": "4.3.*",
+        "symfony/webpack-encore-bundle": "^1.6",
         "symfony/yaml": "4.3.*",
+        "twig/extensions": "^1.5",
         "xivapi/lodestone-parser": "^1.8",
         "xivapi/xivapi-php": "^1.6"
     },

@@ -1,0 +1,11 @@
+@import "variables";
+
+.endpoint {
+  border-left-width: 2px !important;
+  border-left-color: $blue !important;
+  background-color: darken($dark, 1.5);
+}
+
+.param-table tr {
+  background-color: darken($dark, 1.5);
+}

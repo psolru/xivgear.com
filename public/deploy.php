@@ -34,16 +34,6 @@
 		$output .= "<span style=\"color: #6BE234;\">\$</span> <span style=\"color: #729FCF;\">{$command}\n</span>";
 		$output .= htmlentities(trim($tmp)) . "\n";
 	}
-
-    /**
-     * Set deployment timestamp into twig config to refresh user cache for css/js/[…] files.
-     */
-    $file = '../config/packages/twig.yaml';
-    $config = yaml_parse(file_get_contents($file));
-    $config['twig']['globals']['lastDeploy'] = time();
-    $config = yaml_emit($config);
-    file_put_contents($file, $config);
-
 ?>
 <!DOCTYPE HTML>
 <html lang="en-US">

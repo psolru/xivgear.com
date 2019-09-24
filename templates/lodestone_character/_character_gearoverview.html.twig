@@ -49,7 +49,7 @@
             }) }}
         </div>
         <div class="portrait d-inline-block position-relative">
-            <img style="height: 340px;width: 250px;" class="shadow rounded" src="{{ asset('data/gearset/'~character.lodestoneId~'_'~gearset.lodestoneClass.shortEn|lower~'.jpg?t='~gearset.updatedAt|date('')) }}"/>
+            <img style="height: 340px;width: 250px;" class="shadow rounded" src="/data/gearset/{{ character.lodestoneId }}_{{ gearset.lodestoneClass.shortEn|lower }}.jpg?t={{ gearset.updatedAt|date('Ymd') }}"/>
             <div class="ilevel position-absolute">
                 iLvl: {{ gearset.iLevel }}
             </div>

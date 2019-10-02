@@ -40,11 +40,6 @@ class CharacterRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * @param int $itemCount
-     * @return mixed
-     * @throws Exception
-     */
     public function getUpdateQueue(int $itemCount)
     {
         return $this->createQueryBuilder('lc')

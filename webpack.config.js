@@ -93,6 +93,11 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
+
+    // will be applied for `encore dev --watch` and `encore dev-server` commands
+    .configureWatchOptions(watchOptions => {
+        watchOptions.poll = 250; // check for changes every 250 milliseconds
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();

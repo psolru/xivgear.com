@@ -83,4 +83,14 @@ cd /vagrant || exit
 composer install
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
-php bin/console cron:lodestone_class:update
+php bin/console import:lodestone:classes
+
+#
+# NodeJS
+#
+echo "Installing: NodeJS"
+sudo apt-get install -y curl software-properties-common
+curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+sudo apt-get install -y nodejs
+node --version && npm --version
+npm install

@@ -5,6 +5,7 @@ namespace App\Entity\Lodestone;
 use App\Entity\FFLogs\Ranking;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -64,9 +65,9 @@ class Character
     private $gearSets;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private $updateFailed;
+    private $updateFailed = 0;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -77,6 +78,11 @@ class Character
      * @ORM\OneToMany(targetEntity="App\Entity\FFLogs\Ranking", mappedBy="lodestone_character")
      */
     private $rankings;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $inUpdate = false;
 
     public function __construct()
     {
@@ -244,14 +250,14 @@ class Character
         return $this;
     }
 
-    public function hasUpdateFailed(): ?bool
+    public function updateFailures(): int
     {
         return $this->updateFailed;
     }
 
-    public function setUpdateFailed(?bool $updateFailed): self
+    public function setUpdateFailed(int $count): self
     {
-        $this->updateFailed = $updateFailed;
+        $this->updateFailed = $count;
 
         return $this;
     }
@@ -295,6 +301,18 @@ class Character
                 $ranking->setLodestoneCharacter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getInUpdate(): ?bool
+    {
+        return $this->inUpdate;
+    }
+
+    public function setInUpdate(bool $inUpdate): self
+    {
+        $this->inUpdate = $inUpdate;
 
         return $this;
     }

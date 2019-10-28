@@ -44,60 +44,45 @@ class CharacterCommand extends Command
         $charactersToUpdate = 100;
         $queue = $this->em->getRepository(CharacterEntity::class)->getUpdateQueue($charactersToUpdate);
 
+        /** @var $character CharacterEntity */
+        foreach ($queue as $character) {
+            $character->setInUpdate(true);
+            $this->em->persist($character);
+        }
+        $this->em->flush();
+
         if (!$queue) {
             $io->block('Nothing to update.');
             return;
         }
 
-        $progressBar = new ProgressBar($output, $charactersToUpdate);
+        shuffle($queue);
 
-        $progressBar->setFormat("%message%\n%current%/%max% [%bar%] %percent:3s%% %memory:6s%\n");
-        $progressBar->setMessage('Starting…');
-
-        $progressBar->start();
         /** @var $character CharacterEntity */
-        foreach ($queue as $character)
+        foreach ($queue as $key => $character)
         {
-            $progressBar->setMessage("[{$character->getLodestoneId()} ] {$character->getName()} - {$character->getServer()}");
-            $progressBar->advance();
             try {
-
                 if (!$character->getLodestoneId())
                 {
                     $id = $this->api->getCharacterIDBySearch($character->getName(), $character->getServer());
 
                     if (!$id) {
-                        $this->api->setUpdateFailed($character);
+                        $this->api->increaseUpdateFailed($character);
                         throw new \Exception('Character not found');
                     }
+                    $statusMsg = "done";
 
                     $character->setLodestoneId($id);
+                    $character->setInUpdate(false);
                     $this->em->persist($character);
                     $this->em->flush();
                 }
                 $this->api->import($character->getLodestoneId());
             } catch (\Exception $e) {
-                $this->api->setUpdateFailed($character);
-                $io->error($e);
+                $this->api->increaseUpdateFailed($character);
+                $statusMsg = $e->getMessage();
             }
+            echo ($key+1)." / $charactersToUpdate | ".$character->getName()." - ".$statusMsg."\n";
         }
-        $progressBar->finish();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -22,6 +22,12 @@ class CharacterRepository extends ServiceEntityRepository
         parent::__construct($registry, Character::class);
     }
 
+    private function defaultQueryBuilder() {
+        return $this->createQueryBuilder('lc')
+            ->andWhere('lc.autoAdded = 0')
+            ->andWhere('lc.updateFailed < 4');
+    }
+
     public function getRecentlyAdded(int $count)
     {
         return $this->defaultQueryBuilder()
@@ -43,8 +49,9 @@ class CharacterRepository extends ServiceEntityRepository
     public function getUpdateQueue(int $itemCount)
     {
         return $this->createQueryBuilder('lc')
-            ->andWhere('lc.updateFailed IS NULL')
+            ->andWhere('lc.updateFailed < 4')
             ->andWhere('lc.updatedAt <= :date')
+            ->andWhere('lc.inUpdate = false')
             ->setParameter('date', new DateTime('- 6 hours'))
             ->orderBy('lc.updatedAt', 'ASC')
             ->setMaxResults($itemCount)
@@ -71,11 +78,4 @@ class CharacterRepository extends ServiceEntityRepository
         dump($res);
         die;
     }
-
-    private function defaultQueryBuilder() {
-        return $this->createQueryBuilder('lc')
-            ->andWhere('lc.autoAdded = 0')
-            ->andWhere('lc.updateFailed IS NULL');
-    }
-
 }

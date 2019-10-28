@@ -106,7 +106,6 @@ class Client extends AbstractService
                     ]);
 
                     $response = $this->requestFFLogs($handler->generateUrl());
-                    dump($handler->generateUrl());
                     $handler->import(
                         $encounter,
                         $lodestoneClass,

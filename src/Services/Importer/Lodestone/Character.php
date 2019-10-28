@@ -204,9 +204,9 @@ class Character extends AbstractService
         $this->entity->addGearSet($gearSet->entity);
     }
 
-    public function setUpdateFailed(CharacterEntity $character)
+    public function increaseUpdateFailed(CharacterEntity $character)
     {
-        $character->setUpdateFailed(true);
+        $character->setUpdateFailed($character->updateFailures() + 1);
         $this->em->persist($character);
         $this->em->flush();
     }

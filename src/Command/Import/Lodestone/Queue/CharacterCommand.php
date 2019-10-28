@@ -73,15 +73,15 @@ class CharacterCommand extends Command
                     $statusMsg = "done";
 
                     $character->setLodestoneId($id);
-                    $character->setInUpdate(false);
-                    $this->em->persist($character);
-                    $this->em->flush();
                 }
                 $this->api->import($character->getLodestoneId());
             } catch (\Exception $e) {
                 $this->api->increaseUpdateFailed($character);
                 $statusMsg = $e->getMessage();
             }
+            $character->setInUpdate(false);
+            $this->em->persist($character);
+            $this->em->flush();
             echo ($key+1)." / $charactersToUpdate | ".$character->getName()." - ".$statusMsg."\n";
         }
     }

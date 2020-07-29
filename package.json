@@ -6,7 +6,7 @@
         "core-js": "^3.0.0",
         "cssnano": "^4.1.10",
         "fs": "^0.0.1-security",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "node-sass": "^4.12.0",
         "popper.js": "^1.15.0",
         "postcss-import": "^12.0.1",

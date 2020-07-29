@@ -1,4 +1,5 @@
 # xivgear.com
+> Dead because API bullshittery. Will begin scraping by myself.
 
 This is the source code for [XIVGEAR](https://xivgear.com) based on Symfony 4 build for a LAMP Stack.
 
